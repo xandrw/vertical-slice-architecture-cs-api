@@ -1,9 +1,10 @@
 using Application.Interfaces;
+using Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence;
 
-public class DataProxy<T>(DatabaseContext context) : IDataProxy<T> where T : class
+public class DataProxy<T>(DatabaseContext context) : IDataProxy<T> where T : class, IEntity
 {
     public IQueryable<T> Query()
     {

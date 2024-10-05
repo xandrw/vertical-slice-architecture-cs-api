@@ -1,6 +1,6 @@
 namespace Domain.Pages;
 
-public class Page(string name, string title, string description)
+public class Page(string name, string title, string description) : IEntity
 {
     public int Id { get; private set; }
 

@@ -1,6 +1,8 @@
+using Domain;
+
 namespace Application.Interfaces;
 
-public interface IDataProxy<T> where T : class
+public interface IDataProxy<T> where T : IEntity
 {
     IQueryable<T> Query();
     void Add(T entity);

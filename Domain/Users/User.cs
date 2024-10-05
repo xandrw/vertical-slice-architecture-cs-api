@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Domain.Users;
 
-public class User(string email, string role, byte[] passwordHash, byte[] passwordSalt)
+public class User(string email, string role, byte[] passwordHash, byte[] passwordSalt) : IEntity
 {
     /// <summary>Auto-Generated and assigned to Property by EF, using Reflection</summary>
     public int Id { get; private set; }
