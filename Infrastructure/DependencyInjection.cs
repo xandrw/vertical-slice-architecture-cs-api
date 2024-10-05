@@ -1,5 +1,7 @@
 using Application;
+using Application.External.PostmanEcho;
 using Application.Features.Auth;
+using Infrastructure.External.PostmanEcho;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -15,5 +17,10 @@ public static class DependencyInjection
         services.AddScoped(typeof(IDataProxy<>), typeof(DataProxy<>));
 
         services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
+
+        services.AddHttpClient<IPostmanEchoTimeClient, PostmanEchoTimeClient>(client =>
+        {
+            client.BaseAddress = new Uri("https://postman-echo.com/time");
+        });
     }
 }
