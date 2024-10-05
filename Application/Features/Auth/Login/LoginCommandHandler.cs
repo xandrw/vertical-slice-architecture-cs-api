@@ -1,4 +1,5 @@
 using Application.Features.Auth.Login.Http;
+using Application.Interfaces;
 using Domain.Users;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

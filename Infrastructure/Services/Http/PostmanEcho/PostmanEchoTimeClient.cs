@@ -1,6 +1,6 @@
-using Application.External.PostmanEcho;
+using Application.Interfaces.External.PostmanEcho;
 
-namespace Infrastructure.External.PostmanEcho;
+namespace Infrastructure.Services.Http.PostmanEcho;
 
 public class PostmanEchoTimeClient(HttpClient httpClient) : IPostmanEchoTimeClient
 {

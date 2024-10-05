@@ -1,4 +1,4 @@
-using Application;
+using Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence;

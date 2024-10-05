@@ -1,4 +1,4 @@
-namespace Application;
+namespace Application.Interfaces;
 
 public interface IDataProxy<T> where T : class
 {

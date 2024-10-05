@@ -1,4 +1,4 @@
-using Application.External.PostmanEcho;
+using Application.Interfaces.External.PostmanEcho;
 using Domain.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

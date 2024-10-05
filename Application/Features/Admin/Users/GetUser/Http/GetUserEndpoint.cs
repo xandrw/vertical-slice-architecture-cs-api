@@ -1,6 +1,7 @@
 using Application.Features.Admin.Users.Common.Http;
 using Application.Features.Admin.Users.Common.Http.Exceptions;
 using Application.Features.Admin.Users.Common.Http.Swagger;
+using Application.Interfaces;
 using Domain.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

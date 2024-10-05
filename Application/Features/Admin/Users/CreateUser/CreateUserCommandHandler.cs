@@ -1,5 +1,6 @@
 using Application.Features.Admin.Users.Common.Http.Exceptions;
 using Application.Features.Admin.Users.CreateUser.Http;
+using Application.Interfaces;
 using Domain.Users;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

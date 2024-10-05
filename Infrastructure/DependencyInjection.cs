@@ -1,8 +1,8 @@
-using Application;
-using Application.External.PostmanEcho;
 using Application.Features.Auth;
-using Infrastructure.External.PostmanEcho;
+using Application.Interfaces;
+using Application.Interfaces.External.PostmanEcho;
 using Infrastructure.Persistence;
+using Infrastructure.Services.Http.PostmanEcho;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
