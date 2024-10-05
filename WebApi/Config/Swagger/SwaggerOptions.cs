@@ -11,6 +11,7 @@ public class SwaggerOptions : IConfigureOptions<SwaggerGenOptions>
     {
         options.ExampleFilters();
         options.EnableAnnotations();
+        options.DocumentFilter<SwaggerDocumentFilter>();
 
         options.AddSecurityDefinition(
             "Bearer",

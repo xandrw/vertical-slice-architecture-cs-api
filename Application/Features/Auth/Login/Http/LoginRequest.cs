@@ -1,16 +1,17 @@
 using System.ComponentModel.DataAnnotations;
+using MediatR;
 
 namespace Application.Features.Auth.Login.Http;
 
-public class LoginRequest
+public class LoginRequest(string email, string password) : IRequest<LoginResponse>
 {
     [Required]
     [EmailAddress]
     [MinLength(7)]
-    public required string Email { get; set; }
-
+    public string Email { get; } = email;
+    
     [Required]
     [MinLength(8)]
     [MaxLength(50)]
-    public required string Password { get; set; }
+    public string Password { get; } = password;
 }

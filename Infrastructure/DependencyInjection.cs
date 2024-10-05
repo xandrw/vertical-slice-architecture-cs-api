@@ -1,4 +1,5 @@
-using Domain;
+using Application;
+using Application.Features.Auth;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -8,11 +9,11 @@ namespace Infrastructure;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration config)
+    public static void AddInfrastructure(this IServiceCollection services, IConfiguration config)
     {
         services.AddDbContext<DatabaseContext>(o => o.UseSqlite(config.GetConnectionString("DefaultConnection")));
-        services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+        services.AddScoped(typeof(IDataProxy<>), typeof(DataProxy<>));
 
-        return services;
+        services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
     }
 }

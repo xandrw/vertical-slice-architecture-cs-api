@@ -3,17 +3,15 @@ using System.Text;
 
 namespace Domain.Users;
 
-public class User(string email, byte[] passwordHash, byte[] passwordSalt, string role)
+public class User(string email, string role, byte[] passwordHash, byte[] passwordSalt)
 {
-    /// <summary>
-    ///     Auto-Generated and assigned to Property by EF, using Reflection
-    /// </summary>
+    /// <summary>Auto-Generated and assigned to Property by EF, using Reflection</summary>
     public int Id { get; private set; }
 
     public string Email { get; private set; } = email;
+    public string Role { get; private set; } = role;
     public byte[] PasswordHash { get; private set; } = passwordHash;
     public byte[] PasswordSalt { get; private set; } = passwordSalt;
-    public string Role { get; private set; } = role;
 
     public bool VerifyPassword(string password)
     {
@@ -22,25 +20,21 @@ public class User(string email, byte[] passwordHash, byte[] passwordSalt, string
 
         return computedHash.SequenceEqual(PasswordHash);
     }
-    
-    public User ChangePassword(string password)
+
+    public void ApplyPassword(string password)
     {
         using var hmac = new HMACSHA512();
         PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
         PasswordSalt = hmac.Key;
-        
-        return this;
-    }
-    
-    public User ChangeEmail(string email)
-    {
-        Email = email;
-        return this;
     }
 
-    public User ChangeRole(string role)
+    public void ChangeEmail(string email)
+    {
+        Email = email;
+    }
+
+    public void ChangeRole(string role)
     {
         Role = role;
-        return this;
     }
 }

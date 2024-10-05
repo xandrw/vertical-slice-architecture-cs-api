@@ -8,7 +8,13 @@ public class LoginResponseExample : IExamplesProvider<LoginResponse>
     {
         return new LoginResponse
         {
-            Token = "Bearer auth.jwt.token"
+            Token = "auth.jwt.token",
+            User = new LoginResponse.LoginUserResponse
+            {
+                Id = 1,
+                Email = "example@email.com",
+                Role = "Author|Admin"
+            }
         };
     }
 }

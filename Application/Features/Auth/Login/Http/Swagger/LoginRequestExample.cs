@@ -6,10 +6,6 @@ public class LoginRequestExample : IExamplesProvider<LoginRequest>
 {
     public LoginRequest GetExamples()
     {
-        return new LoginRequest
-        {
-            Email = "email@example.com",
-            Password = "examplePassword"
-        };
+        return new LoginRequest("email@example.com", "password");
     }
 }

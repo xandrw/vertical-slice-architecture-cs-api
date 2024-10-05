@@ -6,6 +6,8 @@ identifier.sqlite
 .idea/
 
 *.db
+*.db-shm
+*.db-wal
 *.user
 
 .env
