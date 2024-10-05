@@ -28,7 +28,7 @@ public class CreateUserEndpoint(IMediator mediator) : ControllerBase
     [SwaggerResponse(statusCode: StatusCodes.Status400BadRequest, Description = "Bad Request")]
     [SwaggerResponse(statusCode: StatusCodes.Status403Forbidden, Description = "Forbidden")]
     [SwaggerResponse(statusCode: StatusCodes.Status409Conflict, Description = "Conflict")]
-    public async Task<IActionResult> CreateUser([FromBody] CreateUserRequest request)
+    public async Task<IActionResult> Post([FromBody] CreateUserRequest request)
     {
         var user = await mediator.Send(request);
         var response = new UserResponse

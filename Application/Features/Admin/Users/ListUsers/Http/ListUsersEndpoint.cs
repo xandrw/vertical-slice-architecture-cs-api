@@ -27,7 +27,7 @@ public class ListUsersEndpoint(IDataProxy<User> dataProxy) : ControllerBase
         Type = typeof(PaginatedListResponse<UserResponse>))]
     [SwaggerResponse(statusCode: StatusCodes.Status403Forbidden, Description = "Forbidden")]
     //
-    public async Task<IActionResult> GetUsers(int pageNumber = 1, int pageSize = 10)
+    public async Task<IActionResult> Get(int pageNumber = 1, int pageSize = 10)
     {
         var total = await dataProxy.Query().CountAsync();
         var users = await dataProxy.Query()

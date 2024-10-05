@@ -17,7 +17,7 @@ public class DeleteUserEndpoint(IMediator mediator) : ControllerBase
     [SwaggerResponse(statusCode: StatusCodes.Status204NoContent, Description = "User Deleted, no content")]
     [SwaggerResponse(statusCode: StatusCodes.Status403Forbidden, Description = "Forbidden")]
     [SwaggerResponse(statusCode: StatusCodes.Status404NotFound, Description = "Not Found")]
-    public async Task<NoContentResult> DeleteUser(int id)
+    public async Task<NoContentResult> Delete(int id)
     {
         await mediator.Send(new DeleteUserCommand(id));
 

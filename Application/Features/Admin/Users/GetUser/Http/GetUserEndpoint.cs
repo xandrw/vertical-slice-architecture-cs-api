@@ -24,7 +24,7 @@ public class GetUserEndpoint(IDataProxy<User> dataProxy) : ControllerBase
     [SwaggerResponse(statusCode: StatusCodes.Status200OK, Description = "User retrieved", Type = typeof(UserResponse))]
     [SwaggerResponse(statusCode: StatusCodes.Status403Forbidden, Description = "Forbidden")]
     [SwaggerResponse(statusCode: StatusCodes.Status404NotFound, Description = "Not Found")]
-    public async Task<IActionResult> GetUser(int id)
+    public async Task<IActionResult> Get(int id)
     {
         var user = await dataProxy.Query().FirstOrDefaultAsync(u => u.Id == id);
 

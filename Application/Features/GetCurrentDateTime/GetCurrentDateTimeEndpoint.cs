@@ -25,7 +25,7 @@ public class GetCurrentDateTimeEndpoint(IPostmanEchoTimeClient postmanEchoTimeCl
         statusCode: StatusCodes.Status204NoContent,
         Description = "External Service could not be reached or failed to respond")]
     [SwaggerResponse(statusCode: StatusCodes.Status401Unauthorized, Description = "Unauthorized")]
-    public async Task<IActionResult> GetCurrentDateTime()
+    public async Task<IActionResult> Get()
     {
         var currentDateTime = await postmanEchoTimeClient.Now();
 

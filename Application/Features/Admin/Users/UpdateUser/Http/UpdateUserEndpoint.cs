@@ -27,7 +27,7 @@ public class UpdateUserEndpoint(IMediator mediator) : ControllerBase
     [SwaggerResponse(statusCode: StatusCodes.Status403Forbidden, Description = "Forbidden")]
     [SwaggerResponse(statusCode: StatusCodes.Status404NotFound, Description = "Not Found")]
     [SwaggerResponse(statusCode: StatusCodes.Status409Conflict, Description = "Conflict")]
-    public async Task<ActionResult> UpdateUser(int id, [FromBody] UpdateUserRequest request)
+    public async Task<ActionResult> Put(int id, [FromBody] UpdateUserRequest request)
     {
         var command = MakeCommand(id, request.Email, request.Role);
         var user = await mediator.Send(command);

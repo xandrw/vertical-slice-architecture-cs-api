@@ -22,7 +22,7 @@ public class ChangePasswordEndpoint(IMediator mediator, AuthenticatedUser authen
     [SwaggerResponse(statusCode: StatusCodes.Status401Unauthorized, Description = "Unauthorized")]
     [SwaggerResponse(statusCode: StatusCodes.Status403Forbidden, Description = "Forbidden")]
     [SwaggerResponse(statusCode: StatusCodes.Status404NotFound, Description = "Not Found")]
-    public async Task<ActionResult> ChangePassword([FromBody] ChangePasswordRequest request)
+    public async Task<ActionResult> Post([FromBody] ChangePasswordRequest request)
     {
         var command = MakeCommand(authenticatedUser.Id, request.Password);
         await mediator.Send(command);

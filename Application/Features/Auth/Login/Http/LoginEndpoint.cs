@@ -20,7 +20,7 @@ public class LoginEndpoint(IMediator mediator) : ControllerBase
     [SwaggerResponseExample(StatusCodes.Status200OK, typeof(LoginResponseExample))]
     [SwaggerResponse(statusCode: StatusCodes.Status200OK, Description = "Logged in", Type = typeof(LoginResponse))]
     [SwaggerResponse(statusCode: StatusCodes.Status401Unauthorized, Description = "Unauthorized")]
-    public async Task<IActionResult> Login([FromBody] LoginRequest request)
+    public async Task<IActionResult> Post([FromBody] LoginRequest request)
     {
         var response = await mediator.Send(request);
 
