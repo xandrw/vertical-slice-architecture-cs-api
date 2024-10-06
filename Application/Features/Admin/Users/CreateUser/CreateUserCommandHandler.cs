@@ -1,4 +1,3 @@
-using Application.Common;
 using Application.Features.Admin.Users.Common.Http.Exceptions;
 using Application.Features.Admin.Users.CreateUser.Http;
 using Application.Interfaces;
@@ -8,7 +7,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Admin.Users.CreateUser;
 
-public class CreateUserCommandHandler(IDataProxy<User> dataProxy) : IRequestHandler<CreateUserRequest, User>
+public class CreateUserCommandHandler(IDataProxy<User> dataProxy, IPasswordHasher passwordHasher)
+    : IRequestHandler<CreateUserRequest, User>
 {
     public async Task<User> Handle(CreateUserRequest request, CancellationToken cancellationToken)
     {
@@ -20,7 +20,7 @@ public class CreateUserCommandHandler(IDataProxy<User> dataProxy) : IRequestHand
             throw new UserExistsException();
         }
 
-        var user = new User(request.Email, request.Role, request.Password, PasswordHasher.HashPassword);
+        var user = new User(request.Email, request.Role, request.Password, passwordHasher.HashPassword);
 
 
         dataProxy.Add(user);

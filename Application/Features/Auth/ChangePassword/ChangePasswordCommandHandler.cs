@@ -1,4 +1,3 @@
-using Application.Common;
 using Application.Features.Admin.Users.Common.Http.Exceptions;
 using Application.Interfaces;
 using Domain.Users;
@@ -7,7 +6,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Auth.ChangePassword;
 
-public class ChangePasswordCommandHandler(IDataProxy<User> dataProxy) : IRequestHandler<ChangePasswordCommand>
+public class ChangePasswordCommandHandler(IDataProxy<User> dataProxy, IPasswordHasher passwordHasher)
+    : IRequestHandler<ChangePasswordCommand>
 {
     public async Task Handle(ChangePasswordCommand command, CancellationToken cancellationToken)
     {
@@ -18,7 +18,7 @@ public class ChangePasswordCommandHandler(IDataProxy<User> dataProxy) : IRequest
             throw new UserNotFoundException();
         }
 
-        user.ApplyPassword(command.Password, PasswordHasher.HashPassword);
+        user.ApplyPassword(command.Password, passwordHasher.HashPassword);
 
         await dataProxy.SaveChangesAsync(cancellationToken);
     }

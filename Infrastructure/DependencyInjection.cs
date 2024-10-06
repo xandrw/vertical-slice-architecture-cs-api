@@ -2,6 +2,7 @@ using Application.Features.Auth;
 using Application.Interfaces;
 using Application.Interfaces.External.PostmanEcho;
 using Infrastructure.Persistence;
+using Infrastructure.Services;
 using Infrastructure.Services.Http.PostmanEcho;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -17,6 +18,7 @@ public static class DependencyInjection
         services.AddScoped(typeof(IDataProxy<>), typeof(DataProxy<>));
 
         services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
+        services.AddScoped<IPasswordHasher, HmacSha512PasswordHasher>();
 
         services.AddHttpClient<IPostmanEchoTimeClient, PostmanEchoTimeClient>(client =>
         {

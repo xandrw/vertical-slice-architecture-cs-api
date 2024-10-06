@@ -1,4 +1,3 @@
-using Application.Common;
 using Application.Features.Auth.Login.Http;
 using Application.Interfaces;
 using Domain.Users;
@@ -10,14 +9,15 @@ namespace Application.Features.Auth.Login;
 
 public class LoginCommandHandler(
     IDataProxy<User> dataProxy,
-    IJwtTokenGenerator jwtTokenGenerator
+    IJwtTokenGenerator jwtTokenGenerator,
+    IPasswordHasher passwordHasher
 ) : IRequestHandler<LoginRequest, LoginResponse>
 {
     public async Task<LoginResponse> Handle(LoginRequest request, CancellationToken cancellationToken)
     {
         var user = await dataProxy.Query().SingleOrDefaultAsync(u => u.Email == request.Email, cancellationToken);
 
-        if (user is null || !user.VerifyPassword(request.Password, PasswordHasher.VerifyPassword))
+        if (user is null || !user.VerifyPassword(request.Password, passwordHasher.VerifyPassword))
         {
             throw new LoginFailedException();
         }

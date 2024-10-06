@@ -1,11 +1,12 @@
 using System.Security.Cryptography;
 using System.Text;
+using Application.Interfaces;
 
-namespace Application.Common;
+namespace Infrastructure.Services;
 
-public static class PasswordHasher
+public class HmacSha512PasswordHasher : IPasswordHasher
 {
-    public static (byte[], byte[]) HashPassword(string password)
+    public (byte[], byte[]) HashPassword(string password)
     {
         using var hmac = new HMACSHA512();
         var passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
@@ -14,7 +15,7 @@ public static class PasswordHasher
         return (passwordHash, passwordSalt);
     }
     
-    public static byte[] VerifyPassword(string password, byte[] passwordSalt)
+    public byte[] VerifyPassword(string password, byte[] passwordSalt)
     {
         using var hmac = new HMACSHA512(passwordSalt);
         return hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
