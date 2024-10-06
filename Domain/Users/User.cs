@@ -5,7 +5,7 @@ namespace Domain.Users;
 
 public class User(string email, string role, byte[] passwordHash, byte[] passwordSalt) : IEntity
 {
-    /// <summary>Auto-Generated and assigned to Property by EF, using Reflection</summary>
+    /// <summary>Auto-Generated and assigned to Property by EF Core, using Reflection</summary>
     public int Id { get; private set; }
 
     public string Email { get; private set; } = email;
