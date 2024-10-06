@@ -23,4 +23,11 @@ public static class DependencyInjection
             client.BaseAddress = new Uri("https://postman-echo.com/time");
         });
     }
+    
+    public static async Task EnsureDatabaseMigratedAsync(this IServiceProvider services)
+    {
+        await using var serviceScope = services.CreateAsyncScope();
+        await using var databaseContext = serviceScope.ServiceProvider.GetRequiredService<DatabaseContext>();
+        await databaseContext.Database.MigrateAsync();
+    }
 }

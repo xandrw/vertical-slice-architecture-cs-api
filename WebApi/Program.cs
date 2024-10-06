@@ -25,10 +25,12 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1"));
+    await app.Services.EnsureDatabaseMigratedAsync();
 }
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 // app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
+
 app.Run();
