@@ -19,8 +19,7 @@ public class CreateUserCommandHandler(IDataProxy<User> dataProxy) : IRequestHand
             throw new UserExistsException();
         }
 
-        var user = new User(request.Email, request.Role, [], []);
-        user.ApplyPassword(request.Password);
+        var user = new User(request.Email, request.Role, request.Password);
 
 
         dataProxy.Add(user);
