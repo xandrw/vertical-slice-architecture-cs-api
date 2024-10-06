@@ -14,7 +14,7 @@ dotnet restore
 ## Usage
 Run the project using the following command:
 ```bash
-dotnet run
+dotnet run --project WebApi
 ```
 
 ## Migrations
