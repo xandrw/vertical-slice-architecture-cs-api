@@ -12,10 +12,18 @@ dotnet restore
 ```
 
 ## Usage
-Run the project using the following command:
+Run the project:
 ```bash
 dotnet run --project WebApi
 ```
+
+Clean the project:
+```bash
+dotnet clean
+```
+
+If you're using an IDE, the `WebApi/Properties/launchSettings.json` file will be recognized,
+and you will be able to `run`/`debug` the application from the UI
 
 ## Migrations
 Because Migrations run automatically when starting the project in **Development**
