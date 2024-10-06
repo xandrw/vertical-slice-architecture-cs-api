@@ -1,3 +1,4 @@
+using Application.Common;
 using Application.Features.Admin.Users.Common.Http.Exceptions;
 using Application.Interfaces;
 using Domain.Users;
@@ -17,7 +18,7 @@ public class ChangePasswordCommandHandler(IDataProxy<User> dataProxy) : IRequest
             throw new UserNotFoundException();
         }
 
-        user.ApplyPassword(command.Password);
+        user.ApplyPassword(command.Password, PasswordHasher.HashPassword);
 
         await dataProxy.SaveChangesAsync(cancellationToken);
     }

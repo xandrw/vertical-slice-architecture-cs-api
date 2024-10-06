@@ -1,6 +1,3 @@
-using System.Security.Cryptography;
-using System.Text;
-
 namespace Domain.Users;
 
 public class User : IEntity
@@ -13,11 +10,11 @@ public class User : IEntity
     public byte[] PasswordHash { get; private set; } = [];
     public byte[] PasswordSalt { get; private set; } = [];
 
-    public User(string email, string role, string password)
+    public User(string email, string role, string password, Func<string, (byte[], byte[])> passwordHasher)
     {
         Email = email;
         Role = role;
-        ApplyPassword(password);
+        ApplyPassword(password, passwordHasher);
     }
     
     // ReSharper disable once UnusedMember.Local
@@ -29,19 +26,17 @@ public class User : IEntity
         PasswordSalt = passwordSalt;
     }
     
-    public bool VerifyPassword(string password)
+    public bool VerifyPassword(string password, Func<string, byte[], byte[]> passwordVerifier)
     {
-        using var hmac = new HMACSHA512(PasswordSalt);
-        var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-
+        var computedHash = passwordVerifier(password, PasswordSalt);
         return computedHash.SequenceEqual(PasswordHash);
     }
 
-    public void ApplyPassword(string password)
+    public void ApplyPassword(string password, Func<string, (byte[], byte[])> passwordHasher)
     {
-        using var hmac = new HMACSHA512();
-        PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-        PasswordSalt = hmac.Key;
+        var (hash, salt) = passwordHasher(password);
+        PasswordHash = hash;
+        PasswordSalt = salt;
     }
 
     public void ChangeEmail(string email)

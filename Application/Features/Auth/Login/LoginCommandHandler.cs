@@ -1,3 +1,4 @@
+using Application.Common;
 using Application.Features.Auth.Login.Http;
 using Application.Interfaces;
 using Domain.Users;
@@ -16,7 +17,7 @@ public class LoginCommandHandler(
     {
         var user = await dataProxy.Query().SingleOrDefaultAsync(u => u.Email == request.Email, cancellationToken);
 
-        if (user is null || !user.VerifyPassword(request.Password))
+        if (user is null || !user.VerifyPassword(request.Password, PasswordHasher.VerifyPassword))
         {
             throw new LoginFailedException();
         }

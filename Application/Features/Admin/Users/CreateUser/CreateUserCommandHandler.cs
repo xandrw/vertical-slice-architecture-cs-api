@@ -1,3 +1,4 @@
+using Application.Common;
 using Application.Features.Admin.Users.Common.Http.Exceptions;
 using Application.Features.Admin.Users.CreateUser.Http;
 using Application.Interfaces;
@@ -19,7 +20,7 @@ public class CreateUserCommandHandler(IDataProxy<User> dataProxy) : IRequestHand
             throw new UserExistsException();
         }
 
-        var user = new User(request.Email, request.Role, request.Password);
+        var user = new User(request.Email, request.Role, request.Password, PasswordHasher.HashPassword);
 
 
         dataProxy.Add(user);
