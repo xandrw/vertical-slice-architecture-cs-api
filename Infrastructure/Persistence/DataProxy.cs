@@ -4,21 +4,26 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence;
 
-public class DataProxy<T>(DatabaseContext context) : IDataProxy<T> where T : class, IEntity
+public class DataProxy<TEntity>(DatabaseContext context) : IDataProxy<TEntity> where TEntity : class, IEntity
 {
-    public IQueryable<T> Query()
+    public IQueryable<TEntity> Query()
     {
-        return context.Set<T>().AsQueryable();
+        return context.Set<TEntity>().AsQueryable();
     }
 
-    public void Add(T entity)
+    public void Add(TEntity entity)
     {
-        context.Set<T>().Add(entity);
+        context.Set<TEntity>().Add(entity);
     }
 
-    public void Remove(T entity)
+    public void Remove(TEntity entity)
     {
-        context.Set<T>().Remove(entity);
+        context.Set<TEntity>().Remove(entity);
+    }
+
+    public void Update(TEntity entity)
+    {
+        context.Set<TEntity>().Update(entity);
     }
 
     public Task SaveChangesAsync(CancellationToken cancellationToken = default)
@@ -26,9 +31,11 @@ public class DataProxy<T>(DatabaseContext context) : IDataProxy<T> where T : cla
         return context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<IEnumerable<T>> ReadSqlAsync(FormattableString sql, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<TEntity>> ReadSqlAsync(
+        FormattableString sql,
+        CancellationToken cancellationToken = default)
     {
-        return await context.Set<T>().FromSqlInterpolated(sql).ToListAsync(cancellationToken);
+        return await context.Set<TEntity>().FromSqlInterpolated(sql).ToListAsync(cancellationToken);
     }
 
     public async Task<int> WriteSqlAsync(FormattableString sql, CancellationToken cancellationToken = default)

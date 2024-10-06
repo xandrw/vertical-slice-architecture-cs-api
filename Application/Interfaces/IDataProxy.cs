@@ -2,12 +2,14 @@ using Domain;
 
 namespace Application.Interfaces;
 
-public interface IDataProxy<T> where T : IEntity
+public interface IDataProxy<TEntity> where TEntity : IEntity
 {
-    IQueryable<T> Query();
-    void Add(T entity);
-    void Remove(T entity);
+    IQueryable<TEntity> Query();
+    void Add(TEntity entity);
+    void Remove(TEntity entity);
+    /** /Caution\: Update marks all TEntity.properties as modified and can cause SQL performance issues */
+    void Update(TEntity entity); 
     Task SaveChangesAsync(CancellationToken cancellationToken = default);
-    Task<IEnumerable<T>> ReadSqlAsync(FormattableString sql, CancellationToken cancellationToken = default);
+    Task<IEnumerable<TEntity>> ReadSqlAsync(FormattableString sql, CancellationToken cancellationToken = default);
     Task<int> WriteSqlAsync(FormattableString sql, CancellationToken cancellationToken = default);
 }
