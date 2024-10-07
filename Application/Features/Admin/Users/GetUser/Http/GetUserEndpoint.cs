@@ -22,6 +22,7 @@ public class GetUserEndpoint(IDataProxy<User> dataProxy) : ControllerBase
     [SwaggerOperation(Summary = "Get User", Tags = ["Admin / Users"])]
     [SwaggerResponseExample(StatusCodes.Status200OK, typeof(UserResponseExample))]
     [SwaggerResponse(statusCode: StatusCodes.Status200OK, Description = "User retrieved", Type = typeof(UserResponse))]
+    [SwaggerResponse(statusCode: StatusCodes.Status401Unauthorized, Description = "Unauthorized")]
     [SwaggerResponse(statusCode: StatusCodes.Status403Forbidden, Description = "Forbidden")]
     [SwaggerResponse(statusCode: StatusCodes.Status404NotFound, Description = "Not Found")]
     public async Task<IActionResult> Get(int id)

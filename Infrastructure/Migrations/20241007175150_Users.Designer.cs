@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20241001201859_Users")]
+    [Migration("20241007175150_Users")]
     partial class Users
     {
         /// <inheritdoc />
@@ -44,7 +44,8 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("Email")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("UQ_IX_Users_Email");
 
                     b.ToTable("Users");
                 });

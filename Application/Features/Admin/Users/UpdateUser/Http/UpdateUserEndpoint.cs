@@ -24,24 +24,14 @@ public class UpdateUserEndpoint(IMediator mediator) : ControllerBase
     [SwaggerResponse(
         statusCode: StatusCodes.Status200OK, Description = "User Updated", Type = typeof(UserResponse))]
     [SwaggerResponse(statusCode: StatusCodes.Status400BadRequest, Description = "Bad Request")]
+    [SwaggerResponse(statusCode: StatusCodes.Status401Unauthorized, Description = "Unauthorized")]
     [SwaggerResponse(statusCode: StatusCodes.Status403Forbidden, Description = "Forbidden")]
     [SwaggerResponse(statusCode: StatusCodes.Status404NotFound, Description = "Not Found")]
     [SwaggerResponse(statusCode: StatusCodes.Status409Conflict, Description = "Conflict")]
     public async Task<ActionResult> Put(int id, [FromBody] UpdateUserRequest request)
     {
-        var command = MakeCommand(id, request.Email, request.Role);
-        var user = await mediator.Send(command);
+        var user = await mediator.Send(new UpdateUserCommand(id, request.Email, request.Role));
 
-        return Ok(new UserResponse
-        {
-            Id = user.Id,
-            Email = user.Email,
-            Role = user.Role
-        });
-    }
-
-    private UpdateUserCommand MakeCommand(int id, string email, string role)
-    {
-        return new UpdateUserCommand(id, email, role);
+        return Ok(new UserResponse { Id = user.Id, Email = user.Email, Role = user.Role });
     }
 }

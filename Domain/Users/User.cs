@@ -39,13 +39,19 @@ public class User : IEntity
         PasswordSalt = salt;
     }
 
-    public void ChangeEmail(string email)
+    public User ChangeEmail(string newEmail)
     {
-        Email = email;
+        if (newEmail == Email) return this;
+        Email = newEmail;
+
+        return this;
     }
 
-    public void ChangeRole(string role)
+    public User ChangeRole(string newRole)
     {
-        Role = role;
+        if (newRole == Role) return this;
+        Role = newRole;
+
+        return this;
     }
 }

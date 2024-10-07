@@ -15,6 +15,7 @@ public class DeleteUserEndpoint(IMediator mediator) : ControllerBase
     [HttpDelete(Name = "deleteUser")]
     [SwaggerOperation(Summary = "Delete User", Tags = ["Admin / Users"])]
     [SwaggerResponse(statusCode: StatusCodes.Status204NoContent, Description = "User Deleted, no content")]
+    [SwaggerResponse(statusCode: StatusCodes.Status401Unauthorized, Description = "Unauthorized")]
     [SwaggerResponse(statusCode: StatusCodes.Status403Forbidden, Description = "Forbidden")]
     [SwaggerResponse(statusCode: StatusCodes.Status404NotFound, Description = "Not Found")]
     public async Task<NoContentResult> Delete(int id)

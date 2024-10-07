@@ -41,7 +41,8 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("Email")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("UQ_IX_Users_Email");
 
                     b.ToTable("Users");
                 });

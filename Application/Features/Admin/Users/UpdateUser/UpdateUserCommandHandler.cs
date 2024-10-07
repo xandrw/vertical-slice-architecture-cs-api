@@ -1,3 +1,4 @@
+using Application.Extensions;
 using Application.Features.Admin.Users.Common.Http.Exceptions;
 using Application.Interfaces;
 using Domain.Users;
@@ -6,37 +7,25 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Admin.Users.UpdateUser;
 
-public class UpdateUserCommandHandler(IDataProxy<User> dataProxy)
-    : IRequestHandler<UpdateUserCommand, User>
+public class UpdateUserCommandHandler(IDataProxy<User> dataProxy) : IRequestHandler<UpdateUserCommand, User>
 {
     public async Task<User> Handle(UpdateUserCommand command, CancellationToken cancellationToken)
     {
-        var user = await dataProxy.Query()
-            .SingleOrDefaultAsync(u => u.Id == command.Id, cancellationToken);
+        var user = await dataProxy.Query().SingleOrDefaultAsync(u => u.Id == command.Id, cancellationToken);
 
-        if (user is null)
+        if (user is null) throw new UserNotFoundException();
+
+        user.ChangeEmail(command.Email)
+            .ChangeRole(command.Role);
+
+        try
         {
-            throw new UserNotFoundException();
+            await dataProxy.SaveChangesAsync(cancellationToken);
         }
-
-        if (command.Email is not null && command.Email != user.Email)
+        catch (DbUpdateException e) when (e.HasUniqueConstraintError())
         {
-            var emailExists = await dataProxy.Query().AnyAsync(u => u.Email == command.Email, cancellationToken);
-
-            if (emailExists)
-            {
-                throw new UserExistsException();
-            }
-            
-            user.ChangeEmail(command.Email);
+            throw new UserExistsException();
         }
-
-        if (command.Role is not null)
-        {
-            user.ChangeRole(command.Role);
-        }
-
-        await dataProxy.SaveChangesAsync(cancellationToken);
 
         return user;
     }

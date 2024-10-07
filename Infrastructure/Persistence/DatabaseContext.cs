@@ -1,4 +1,5 @@
 using Domain.Users;
+using Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -17,7 +18,7 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
     
     protected void ConfigureUser(EntityTypeBuilder<User> builder)
     {
-        builder.HasIndex(u => u.Email).IsUnique();
+        builder.HasIndex(u => u.Email).IsUniqueWithPrefix();
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
