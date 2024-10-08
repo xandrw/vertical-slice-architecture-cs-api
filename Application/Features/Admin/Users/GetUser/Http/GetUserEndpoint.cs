@@ -1,5 +1,5 @@
+using Application.Common.Http.Exceptions;
 using Application.Features.Admin.Users.Common.Http;
-using Application.Features.Admin.Users.Common.Http.Exceptions;
 using Application.Features.Admin.Users.Common.Http.Swagger;
 using Application.Interfaces;
 using Domain.Users;
@@ -29,10 +29,7 @@ public class GetUserEndpoint(IDataProxy<User> dataProxy) : ControllerBase
     {
         var user = await dataProxy.Query().FirstOrDefaultAsync(u => u.Id == id);
 
-        if (user is null)
-        {
-            throw new UserNotFoundException();
-        }
+        if (user is null) throw new NotFoundHttpException<User>();
 
         return Ok(new UserResponse
         {

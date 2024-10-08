@@ -1,5 +1,5 @@
+using Application.Common.Http.Exceptions;
 using Application.Extensions;
-using Application.Features.Admin.Users.Common.Http.Exceptions;
 using Application.Features.Admin.Users.CreateUser.Http;
 using Application.Interfaces;
 using Domain.Users;
@@ -13,17 +13,16 @@ public class CreateUserCommandHandler(IDataProxy<User> dataProxy, IPasswordHashe
 {
     public async Task<User> Handle(CreateUserRequest request, CancellationToken cancellationToken)
     {
-        var user = new User(request.Email, request.Role, request.Password, passwordHasher.HashPassword);
-
-        dataProxy.Add(user);
+        var user = User.Create(request.Email, request.Role, request.Password, passwordHasher.HashPassword);
 
         try
         {
+            dataProxy.Add(user);
             await dataProxy.SaveChangesAsync(cancellationToken);
         }
         catch (DbUpdateException e) when (e.HasUniqueConstraintError())
         {
-            throw new UserExistsException();
+            throw new ConflictHttpException<User>();
         }
 
         return user;

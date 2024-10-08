@@ -1,5 +1,5 @@
+using Application.Common.Http.Exceptions;
 using Application.Extensions;
-using Application.Features.Admin.Users.Common.Http.Exceptions;
 using Application.Interfaces;
 using Domain.Users;
 using MediatR;
@@ -13,7 +13,7 @@ public class UpdateUserCommandHandler(IDataProxy<User> dataProxy) : IRequestHand
     {
         var user = await dataProxy.Query().SingleOrDefaultAsync(u => u.Id == command.Id, cancellationToken);
 
-        if (user is null) throw new UserNotFoundException();
+        if (user is null) throw new NotFoundHttpException<User>();
 
         user.ChangeEmail(command.Email)
             .ChangeRole(command.Role);
@@ -24,7 +24,7 @@ public class UpdateUserCommandHandler(IDataProxy<User> dataProxy) : IRequestHand
         }
         catch (DbUpdateException e) when (e.HasUniqueConstraintError())
         {
-            throw new UserExistsException();
+            throw new ConflictHttpException<User>();
         }
 
         return user;

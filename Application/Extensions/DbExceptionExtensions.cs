@@ -8,7 +8,7 @@ public static class DbExceptionExtensions
     {
         return e.InnerException is not null &&
                (e.InnerException.Message.Contains("uq", StringComparison.InvariantCultureIgnoreCase) ||
-               e.InnerException.Message.Contains("unique", StringComparison.InvariantCultureIgnoreCase) ||
-               e.InnerException.Message.Contains("duplicate", StringComparison.InvariantCultureIgnoreCase));
+                e.InnerException.Message.Contains("unique", StringComparison.InvariantCultureIgnoreCase) ||
+                e.InnerException.Message.Contains("duplicate", StringComparison.InvariantCultureIgnoreCase));
     }
 }

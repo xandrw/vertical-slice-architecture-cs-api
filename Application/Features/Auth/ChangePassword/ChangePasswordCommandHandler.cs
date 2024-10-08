@@ -1,4 +1,4 @@
-using Application.Features.Admin.Users.Common.Http.Exceptions;
+using Application.Common.Http.Exceptions;
 using Application.Interfaces;
 using Domain.Users;
 using MediatR;
@@ -15,7 +15,7 @@ public class ChangePasswordCommandHandler(IDataProxy<User> dataProxy, IPasswordH
 
         if (user is null)
         {
-            throw new UserNotFoundException();
+            throw new NotFoundHttpException<User>();
         }
 
         user.ApplyPassword(command.Password, passwordHasher.HashPassword);

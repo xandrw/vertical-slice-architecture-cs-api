@@ -1,3 +1,4 @@
+using Application.Common.Http.Exceptions;
 using Application.Features.Auth.Login.Http;
 using Application.Interfaces;
 using Domain.Users;
@@ -19,9 +20,9 @@ public class LoginCommandHandler(
 
         if (user is null || !user.VerifyPassword(request.Password, passwordHasher.VerifyPassword))
         {
-            throw new LoginFailedException();
+            throw new UnauthorizedHttpException();
         }
-        
+
         var token = jwtTokenGenerator.GenerateToken(user);
 
         return new LoginResponse
