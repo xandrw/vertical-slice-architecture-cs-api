@@ -8,7 +8,7 @@ public class CreateUserRequest(string email, string password, string role) : IRe
 {
     [Required]
     [EmailAddress]
-    [MinLength(7)]
+    [MinLength(6)]
     public string Email { get; } = email;
 
     [Required]

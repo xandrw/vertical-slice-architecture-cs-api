@@ -1,4 +1,4 @@
-using Domain.Exceptions;
+using Domain.Validation;
 
 namespace Domain.Pages;
 
@@ -6,9 +6,9 @@ public class Page : BaseEntity
 {
     public int Id { get; private set; }
 
-    public string Name { get; private set; } = "";
-    public string Title { get; private set; } = "";
-    public string Description { get; private set; } = "";
+    public string Name { get; private set; } = string.Empty;
+    public string Title { get; private set; } = string.Empty;
+    public string Description { get; private set; } = string.Empty;
 
     private readonly IList<Section> _sections = new List<Section>();
     public IReadOnlyList<Section> Sections => _sections.ToList().AsReadOnly();
@@ -20,20 +20,9 @@ public class Page : BaseEntity
 
     public static Page Create(string name, string title, string description)
     {
-        if (string.IsNullOrWhiteSpace(name) || name.Length == 0)
-        {
-            throw new InvalidStringException(nameof(name));
-        }
-
-        if (string.IsNullOrWhiteSpace(title) || title.Length == 0)
-        {
-            throw new InvalidStringException(nameof(title));
-        }
-
-        if (string.IsNullOrWhiteSpace(description) || description.Length == 0)
-        {
-            throw new InvalidStringException(nameof(description));
-        }
+        Contract.Requires(!string.IsNullOrWhiteSpace(name) && name.Length > 0);
+        Contract.Requires(!string.IsNullOrWhiteSpace(title) && title.Length > 0);
+        Contract.Requires(!string.IsNullOrWhiteSpace(description) && description.Length > 0);
 
         return new Page { Name = name, Title = title, Description = description };
     }
