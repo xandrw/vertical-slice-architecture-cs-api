@@ -3,7 +3,9 @@ using Application.Common.Http.Swagger;
 using Application.Features.Admin.Users.Common.Http;
 using Application.Features.Admin.Users.Common.Http.Swagger;
 using Application.Features.Admin.Users.CreateUser.Http.Swagger;
+using Domain.Users;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -14,7 +16,7 @@ namespace Application.Features.Admin.Users.CreateUser.Http;
 [ApiController]
 [Route("api/admin/users")]
 [Produces("application/json")]
-// [Authorize(Roles = Role.Admin)]
+[Authorize(Roles = Role.Admin)]
 public class CreateUserEndpoint(IMediator mediator) : ControllerBase
 {
     [HttpPost(Name = "createUser")]

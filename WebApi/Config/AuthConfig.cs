@@ -7,13 +7,14 @@ namespace WebApi.Config;
 
 public static class AuthConfig
 {
-    public static void ConfigureJwt(this IServiceCollection services, IConfiguration config)
+    public static void ConfigureAuth(this IServiceCollection services, IConfiguration config)
     {
         var key = Encoding.ASCII.GetBytes(
             config["Jwt:Key"] ??
             throw new InvalidOperationException("appsettings.json Jwt:Key is missing"));
 
-        services.AddAuthentication(options =>
+        services
+            .AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;

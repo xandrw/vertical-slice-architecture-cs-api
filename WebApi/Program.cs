@@ -9,13 +9,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration.ConfigureEnvVariables();
 
-// Add features/slices
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
 
-builder.Services.AddControllers(options => options.Filters.Add<ValidateModelFilter>());
+builder.Services
+    .AddControllers(options => options.Filters.Add<ValidateModelFilter>())
+    .ConfigureApiBehaviorOptions(options => options.SuppressModelStateInvalidFilter = true);
 builder.Services.AddHttpContextAccessor();
-builder.Services.ConfigureJwt(builder.Configuration);
+builder.Services.ConfigureAuth(builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.ConfigureSwagger();
 

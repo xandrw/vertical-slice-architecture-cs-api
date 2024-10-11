@@ -29,7 +29,7 @@ public class UpdateUserEndpoint(IMediator mediator) : ControllerBase
     [SwaggerResponse(StatusCodes.Status409Conflict)]
     [SwaggerResponse(StatusCodes.Status422UnprocessableEntity, Type = typeof(UnprocessableEntityResponse))]
     [SwaggerRequestExample(typeof(UpdateUserRequest), typeof(UpdateUserRequestExample))]
-    public async Task<ActionResult> Put(int id, [FromBody] UpdateUserRequest request)
+    public async Task<ActionResult> Put([FromBody] UpdateUserRequest request, int id)
     {
         var user = await mediator.Send(new UpdateUserCommand(id, request.Email, request.Role));
 
