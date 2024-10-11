@@ -9,17 +9,17 @@ using Swashbuckle.AspNetCore.Filters;
 namespace Application.Features.Auth.Login.Http;
 
 [ApiController]
-[Route("api/login")]
 [AllowAnonymous]
+[Route("api/login")]
+[Produces("application/json")]
 public class LoginEndpoint(IMediator mediator) : ControllerBase
 {
     [HttpPost(Name = "login")]
-    [Produces("application/json")]
     [SwaggerOperation(Summary = "Login", Tags = ["Auth"])]
-    [SwaggerRequestExample(typeof(LoginRequest), typeof(LoginRequestExample))]
+    [SwaggerResponse(StatusCodes.Status200OK, Description = "Logged in", Type = typeof(LoginResponse))]
     [SwaggerResponseExample(StatusCodes.Status200OK, typeof(LoginResponseExample))]
-    [SwaggerResponse(statusCode: StatusCodes.Status200OK, Description = "Logged in", Type = typeof(LoginResponse))]
-    [SwaggerResponse(statusCode: StatusCodes.Status401Unauthorized, Description = "Unauthorized")]
+    [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+    [SwaggerRequestExample(typeof(LoginRequest), typeof(LoginRequestExample))]
     public async Task<IActionResult> Post([FromBody] LoginRequest request)
     {
         var response = await mediator.Send(request);

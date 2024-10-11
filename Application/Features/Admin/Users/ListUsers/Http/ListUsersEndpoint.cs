@@ -14,19 +14,16 @@ namespace Application.Features.Admin.Users.ListUsers.Http;
 
 [ApiController]
 [Route("api/admin/users")]
+[Produces("application/json")]
 [Authorize(Roles = Role.Admin)]
 public class ListUsersEndpoint(IDataProxy<User> dataProxy) : ControllerBase
 {
     [HttpGet(Name = "listUsers")]
-    [Produces("application/json")]
     [SwaggerOperation(Summary = "List Paginated Users", Tags = ["Admin / Users"])]
+    [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(PaginatedListResponse<UserResponse>))]
     [SwaggerResponseExample(StatusCodes.Status200OK, typeof(ListUsersResponseExample))]
-    [SwaggerResponse(
-        statusCode: StatusCodes.Status200OK,
-        Description = "User list retrieved",
-        Type = typeof(PaginatedListResponse<UserResponse>))]
-    [SwaggerResponse(statusCode: StatusCodes.Status401Unauthorized, Description = "Unauthorized")]
-    [SwaggerResponse(statusCode: StatusCodes.Status403Forbidden, Description = "Forbidden")]
+    [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+    [SwaggerResponse(StatusCodes.Status403Forbidden)]
     public async Task<IActionResult> Get(int pageNumber = 1, int pageSize = 10)
     {
         var total = await dataProxy.Query().CountAsync();

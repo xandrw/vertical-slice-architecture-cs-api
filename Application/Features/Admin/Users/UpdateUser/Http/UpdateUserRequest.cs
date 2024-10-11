@@ -4,14 +4,13 @@ namespace Application.Features.Admin.Users.UpdateUser.Http;
 
 public class UpdateUserRequest
 {
-    [Required]
-    [EmailAddress]
-    [MinLength(7)]
+    [Required(ErrorMessage = "error.email.required")]
+    [EmailAddress(ErrorMessage = "error.email.invalid")]
+    [MinLength(6, ErrorMessage = "error.email.min_length")]
+    [MaxLength(60, ErrorMessage = "error.email.max_length")]
     public required string Email { get; set; }
 
-    [Required]
-    [MinLength(2)]
-    [MaxLength(20)]
-    [RegularExpression("^(Admin|Author)$")]
+    [Required(ErrorMessage = "error.role.required")]
+    [AllowedValues(Domain.Users.Role.Author, Domain.Users.Role.Admin, ErrorMessage = "error.role.invalid")]
     public required string Role { get; set; }
 }

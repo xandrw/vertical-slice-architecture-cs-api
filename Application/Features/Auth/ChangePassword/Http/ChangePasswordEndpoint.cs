@@ -1,4 +1,5 @@
 using Application.Common;
+using Application.Common.Http.Responses;
 using Domain.Users;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -16,12 +17,13 @@ public class ChangePasswordEndpoint(IMediator mediator, AuthenticatedUser authen
 {
     [HttpPost(Name = "changePassword")]
     [SwaggerOperation(Summary = "Change Password", Tags = ["Auth"])]
+    [SwaggerResponse(StatusCodes.Status204NoContent, Description = "Password Changed")]
+    [SwaggerResponse(StatusCodes.Status400BadRequest)]
+    [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+    [SwaggerResponse(StatusCodes.Status403Forbidden)]
+    [SwaggerResponse(StatusCodes.Status404NotFound)]
+    [SwaggerResponse(StatusCodes.Status422UnprocessableEntity, Type = typeof(UnprocessableEntityResponse))]
     [SwaggerRequestExample(typeof(ChangePasswordRequest), typeof(ChangePasswordRequestExample))]
-    [SwaggerResponse(statusCode: StatusCodes.Status204NoContent, Description = "Password Changed")]
-    [SwaggerResponse(statusCode: StatusCodes.Status400BadRequest, Description = "Bad Request")]
-    [SwaggerResponse(statusCode: StatusCodes.Status401Unauthorized, Description = "Unauthorized")]
-    [SwaggerResponse(statusCode: StatusCodes.Status403Forbidden, Description = "Forbidden")]
-    [SwaggerResponse(statusCode: StatusCodes.Status404NotFound, Description = "Not Found")]
     public async Task<ActionResult> Post([FromBody] ChangePasswordRequest request)
     {
         var command = MakeCommand(authenticatedUser.Id, request.Password);

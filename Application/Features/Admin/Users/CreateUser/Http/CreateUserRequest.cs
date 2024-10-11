@@ -4,21 +4,20 @@ using MediatR;
 
 namespace Application.Features.Admin.Users.CreateUser.Http;
 
-public class CreateUserRequest(string email, string password, string role) : IRequest<User>
+public class CreateUserRequest(string email, string role, string password) : IRequest<User>
 {
-    [Required]
-    [EmailAddress]
-    [MinLength(6)]
+    [Required(ErrorMessage = "error.email.required")]
+    [EmailAddress(ErrorMessage = "error.email.invalid")]
+    [MinLength(6, ErrorMessage = "error.email.min_length")]
+    [MaxLength(60, ErrorMessage = "error.email.max_length")]
     public string Email { get; } = email;
 
-    [Required]
-    [MinLength(8)]
-    [MaxLength(50)]
-    public string Password { get; } = password;
-    
-    [Required]
-    [MinLength(2)]
-    [MaxLength(20)]
-    [RegularExpression("^(Admin|Author)$")]
+    [Required(ErrorMessage = "error.role.required")]
+    [AllowedValues(Domain.Users.Role.Author, Domain.Users.Role.Admin, ErrorMessage = "error.role.invalid")]
     public string Role { get; } = role;
+    
+    [Required(ErrorMessage = "error.password.required")]
+    [MinLength(8, ErrorMessage = "error.password.min_length")]
+    [MaxLength(60, ErrorMessage = "error.password.max_length")]
+    public string Password { get; } = password;
 }

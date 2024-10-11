@@ -1,33 +1,33 @@
 using Application;
 using Infrastructure;
-using WebApi;
 using WebApi.Config;
 using WebApi.Config.Swagger;
+using WebApi.Filters;
+using WebApi.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration.ConfigureEnvVariables();
 
-builder.Services.AddControllers();
+// Add features/slices
+builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddApplication();
+
+builder.Services.AddControllers(options => options.Filters.Add<ValidateModelFilter>());
 builder.Services.AddHttpContextAccessor();
 builder.Services.ConfigureJwt(builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.ConfigureSwagger();
 
-// Add features/slices
-builder.Services.AddInfrastructure(builder.Configuration);
-builder.Services.AddApplication();
-
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1"));
+    app.UseSwaggerDocumentation();
     await app.Services.EnsureDatabaseMigratedAsync();
 }
 
+// Configure the HTTP request pipeline.
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 // app.UseHttpsRedirection();
 app.UseAuthorization();

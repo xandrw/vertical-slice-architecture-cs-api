@@ -10,11 +10,12 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure;
 
-public static class DependencyInjection
+public static class InfrastructureConfig
 {
     public static void AddInfrastructure(this IServiceCollection services, IConfiguration config)
     {
         services.AddDbContext<DatabaseContext>(o => o.UseSqlite(config.GetConnectionString("DefaultConnection")));
+        // TODO: Maybe convert to Repository pattern
         services.AddScoped(typeof(IDataProxy<>), typeof(DataProxy<>));
 
         services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
@@ -25,7 +26,7 @@ public static class DependencyInjection
             client.BaseAddress = new Uri("https://postman-echo.com/time");
         });
     }
-    
+
     public static async Task EnsureDatabaseMigratedAsync(this IServiceProvider services)
     {
         await using var serviceScope = services.CreateAsyncScope();

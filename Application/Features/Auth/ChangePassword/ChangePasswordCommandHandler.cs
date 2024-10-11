@@ -18,7 +18,7 @@ public class ChangePasswordCommandHandler(IDataProxy<User> dataProxy, IPasswordH
             throw new NotFoundHttpException<User>();
         }
 
-        user.ApplyPassword(command.Password, passwordHasher.HashPassword);
+        user.ChangePassword(command.Password, passwordHasher.HashPassword);
 
         await dataProxy.SaveChangesAsync(cancellationToken);
     }

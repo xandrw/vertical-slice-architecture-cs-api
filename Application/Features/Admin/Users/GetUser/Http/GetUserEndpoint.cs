@@ -14,17 +14,17 @@ namespace Application.Features.Admin.Users.GetUser.Http;
 
 [ApiController]
 [Route("api/admin/users/{id}")]
+[Produces("application/json")]
 [Authorize(Roles = Role.Admin)]
 public class GetUserEndpoint(IDataProxy<User> dataProxy) : ControllerBase
 {
     [HttpGet(Name = "getUser")]
-    [Produces("application/json")]
     [SwaggerOperation(Summary = "Get User", Tags = ["Admin / Users"])]
+    [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(UserResponse))]
     [SwaggerResponseExample(StatusCodes.Status200OK, typeof(UserResponseExample))]
-    [SwaggerResponse(statusCode: StatusCodes.Status200OK, Description = "User retrieved", Type = typeof(UserResponse))]
-    [SwaggerResponse(statusCode: StatusCodes.Status401Unauthorized, Description = "Unauthorized")]
-    [SwaggerResponse(statusCode: StatusCodes.Status403Forbidden, Description = "Forbidden")]
-    [SwaggerResponse(statusCode: StatusCodes.Status404NotFound, Description = "Not Found")]
+    [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+    [SwaggerResponse(StatusCodes.Status403Forbidden)]
+    [SwaggerResponse(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Get(int id)
     {
         var user = await dataProxy.Query().FirstOrDefaultAsync(u => u.Id == id);

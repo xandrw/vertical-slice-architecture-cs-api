@@ -14,39 +14,51 @@ public class User : BaseEntity
 
     public static User Create(string email, string role, string password, Func<string, (byte[], byte[])> passwordHasher)
     {
-        Contract.Requires(!string.IsNullOrWhiteSpace(email) && email.Length >= 6);
-        Contract.Requires(!string.IsNullOrWhiteSpace(role) && Users.Role.Roles.Contains(role));
-        Contract.Requires(!string.IsNullOrWhiteSpace(password) && password.Length is >= 8 and <= 50);
+        Contract.Requires(string.IsNullOrWhiteSpace(email) == false);
+        Contract.Requires(email.Length is >= 6 and <= 60);
+        Contract.Requires(Users.Role.Roles.Contains(role));
+        Contract.Requires(string.IsNullOrWhiteSpace(password) == false);
+        Contract.Requires(password.Length is >= 8 and <= 60);
 
-        return new User { Email = email, Role = role }.ApplyPassword(password, passwordHasher);
+        return new User { Email = email, Role = role }.ChangePassword(password, passwordHasher);
     }
 
-    public bool VerifyPassword(string password, Func<string, byte[], byte[]> passwordVerifier)
+    public User ChangeEmail(string email)
     {
-        var computedHash = passwordVerifier(password, PasswordSalt);
-        return computedHash.SequenceEqual(PasswordHash);
+        if (email == Email) return this;
+
+        Contract.Requires(string.IsNullOrWhiteSpace(email) == false);
+        Contract.Requires(email.Length is >= 6 and <= 60);
+
+        Email = email;
+        return this;
     }
 
-    public User ApplyPassword(string password, Func<string, (byte[], byte[])> passwordHasher)
+    public User ChangeRole(string role)
     {
+        if (role == Role) return this;
+
+        Contract.Requires(Users.Role.Roles.Contains(role));
+
+        Role = role;
+        return this;
+    }
+
+    public User ChangePassword(string password, Func<string, (byte[], byte[])> passwordHasher)
+    {
+        Contract.Requires(string.IsNullOrWhiteSpace(password) == false);
+        Contract.Requires(password.Length is >= 8 and <= 60);
+
         var (hash, salt) = passwordHasher(password);
         PasswordHash = hash;
         PasswordSalt = salt;
         return this;
     }
 
-    public User ChangeEmail(string newEmail)
+    public bool VerifyPassword(string password, Func<string, byte[], byte[]> passwordVerifier)
     {
-        if (newEmail == Email) return this;
-        Email = newEmail;
-        return this;
-    }
-
-    public User ChangeRole(string newRole)
-    {
-        if (newRole == Role) return this;
-        Role = newRole;
-        return this;
+        var computedHash = passwordVerifier(password, PasswordSalt);
+        return computedHash.SequenceEqual(PasswordHash);
     }
 }
 
