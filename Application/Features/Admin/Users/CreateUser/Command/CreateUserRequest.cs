@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using Domain.Users;
 using MediatR;
 
-namespace Application.Features.Admin.Users.CreateUser.Http;
+namespace Application.Features.Admin.Users.CreateUser.Command;
 
 public class CreateUserRequest(string email, string role, string password) : IRequest<User>
 {

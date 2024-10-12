@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Application.Features.Admin.Users.CreateUser.Http;
+namespace Application.Features.Admin.Users.CreateUser.Command;
 
 public class CreateUserResponse
 {

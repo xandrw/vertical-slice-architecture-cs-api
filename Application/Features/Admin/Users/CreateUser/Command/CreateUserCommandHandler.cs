@@ -1,12 +1,11 @@
 using Application.Common.Http.Exceptions;
 using Application.Extensions;
-using Application.Features.Admin.Users.CreateUser.Http;
 using Application.Interfaces;
 using Domain.Users;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Application.Features.Admin.Users.CreateUser;
+namespace Application.Features.Admin.Users.CreateUser.Command;
 
 public class CreateUserCommandHandler(IDataProxy<User> dataProxy, IPasswordHasher passwordHasher)
     : IRequestHandler<CreateUserRequest, User>

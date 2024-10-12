@@ -15,17 +15,17 @@ namespace Application.Features.Admin.Pages.GetPage;
 
 [ApiController]
 [Route("api/admin/pages/{id}")]
+[Produces("application/json")]
 [Authorize(Roles = Role.Admin)]
 public class GetPageEndpoint(IDataProxy<Page> dataProxy) : ControllerBase
 {
     [HttpGet(Name = "getPage")]
-    [Produces("application/json")]
     [SwaggerOperation(Summary = "Get Page", Tags = ["Admin / Pages"])]
+    [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(PageResponse))]
     [SwaggerResponseExample(StatusCodes.Status200OK, typeof(PageResponseExample))]
-    [SwaggerResponse(statusCode: StatusCodes.Status200OK, Description = "Page retrieved", Type = typeof(PageResponse))]
-    [SwaggerResponse(statusCode: StatusCodes.Status401Unauthorized, Description = "Unauthorized")]
-    [SwaggerResponse(statusCode: StatusCodes.Status403Forbidden, Description = "Forbidden")]
-    [SwaggerResponse(statusCode: StatusCodes.Status404NotFound, Description = "Not Found")]
+    [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+    [SwaggerResponse(StatusCodes.Status403Forbidden)]
+    [SwaggerResponse(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Get(int id)
     {
         var page = await dataProxy.Query().Include(p => p.Sections).FirstOrDefaultAsync(u => u.Id == id);

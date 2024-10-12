@@ -2,7 +2,8 @@ using Application.Common.Http.Responses;
 using Application.Common.Http.Swagger;
 using Application.Features.Admin.Users.Common.Http;
 using Application.Features.Admin.Users.Common.Http.Swagger;
-using Application.Features.Admin.Users.CreateUser.Http.Swagger;
+using Application.Features.Admin.Users.CreateUser.Command;
+using Application.Features.Admin.Users.CreateUser.Swagger;
 using Domain.Users;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -11,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Swashbuckle.AspNetCore.Filters;
 
-namespace Application.Features.Admin.Users.CreateUser.Http;
+namespace Application.Features.Admin.Users.CreateUser;
 
 [ApiController]
 [Route("api/admin/users")]
