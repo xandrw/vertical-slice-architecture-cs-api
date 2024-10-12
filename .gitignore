@@ -13,3 +13,5 @@ identifier.sqlite
 .env
 riderModule.iml
 appsettings.Development.json
+
+WebApi/www/*

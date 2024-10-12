@@ -1,5 +1,6 @@
 using Application;
 using Infrastructure;
+using Microsoft.Extensions.FileProviders;
 using WebApi.Config;
 using WebApi.Config.Swagger;
 using WebApi.Filters;
@@ -28,10 +29,23 @@ if (app.Environment.IsDevelopment())
     await app.Services.EnsureDatabaseMigratedAsync();
 }
 
+var fileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "www"));
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = fileProvider,
+    RequestPath = ""
+});
+
 // Configure the HTTP request pipeline.
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 // app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
+
+app.MapFallbackToFile("index.html", new StaticFileOptions
+{
+    FileProvider = fileProvider
+});
 
 app.Run();
