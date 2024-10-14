@@ -7,7 +7,7 @@ public class LoginRequest(string email, string password) : IRequest<LoginRespons
 {
     [Required]
     [EmailAddress]
-    [MinLength(7)]
+    [MinLength(6)]
     public string Email { get; } = email;
     
     [Required]

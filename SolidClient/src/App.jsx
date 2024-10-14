@@ -1,14 +1,15 @@
-import DefaultLayout from "./Page/DefaultLayout";
+import {Route, Router} from "@solidjs/router";
+import ListUsersPage from "./Admin/Users/ListUsersPage";
+import Login from "./Auth/Login";
 
-const App = () => {
-    return (
-        <DefaultLayout>
-            <article class="flex-grow flex flex-col p-6 bg-teal-200">
-                <h1 class="basis-1/12 bg-red-300"></h1>
-                <div class="basis-11/12 bg-fuchsia-200"></div>
-            </article>
-        </DefaultLayout>
-    );
-};
+const App = () => (
+    <Router base="/" >
+        <Route path="/admin">
+            <Route path="/users" component={ListUsersPage}/>
+        </Route>
+        
+        <Route path="/login" component={Login}/>
+    </Router>
+);
 
 export default App;

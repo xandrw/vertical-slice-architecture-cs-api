@@ -2,8 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {}
+@layer base {
+    
+}
 
 @layer components {
-    
+    input.form-input {
+        @apply block w-full mt-1 border border-gray-200 p-2 rounded-lg focus:outline-offset-0 focus:outline-4 focus:outline-purple-100 focus:border-purple-400 outline-none;
+        &.invalid {
+            @apply border-red-200 focus:outline-red-100 focus:border-red-400
+        }
+    }
 }

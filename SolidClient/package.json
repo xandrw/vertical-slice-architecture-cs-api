@@ -1,10 +1,10 @@
 {
-  "name": "vite-template-solid",
+  "name": "verticality-solid",
   "version": "0.0.0",
-  "description": "",
+  "description": "Solid app to support C# VSA Architecture",
   "scripts": {
     "start": "vite",
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "vite build",
     "serve": "vite preview"
   },
@@ -19,6 +19,8 @@
   },
   "dependencies": {
     "@solidjs/router": "^0.14.8",
-    "solid-js": "^1.8.11"
+    "axios": "^1.7.7",
+    "solid-js": "^1.8.11",
+    "yup": "^1.4.0"
   }
 }
