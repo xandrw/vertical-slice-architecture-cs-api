@@ -5,7 +5,6 @@ import Input from "../Components/Input";
 import PrimaryButton from "../Components/PrimaryButton";
 import Alert from "../Components/Alert";
 import api from "../api";
-import {setAuth} from "../Store/auth";
 import {useNavigate} from "@solidjs/router";
 
 const Login = () => {
@@ -26,13 +25,12 @@ const Login = () => {
         }
 
         try {
-            const response = await api.login({email: email(), password: password()});
-
-            setAuth(response.data);
+            await api.login({email: email(), password: password()});
             navigate('/admin/users');
         } catch (error) {
             if (error instanceof AxiosError) {
-                setErrors({...errors(), general: error.response.data.error});
+                const errorMessage = error.response?.data?.error || 'An unknown error occurred';
+                setErrors({...errors(), general: errorMessage});
                 console.error('Login error:', error);
                 return;
             }
@@ -67,16 +65,16 @@ const Login = () => {
                         <h1 class="mb-4 text-xl font-semibold">Login</h1>
                         <Input name="email"
                                type="text"
-                               valueSignal={email}
-                               valueSetter={setEmail}
-                               errorsSignal={errors}/>
+                               value={email()}
+                               setter={setEmail}
+                               errors={errors()}/>
                         <Input name="password"
                                type="password"
-                               valueSignal={password}
-                               valueSetter={setPassword}
-                               errorsSignal={errors}/>
+                               value={password()}
+                               setter={setPassword}
+                               errors={errors()}/>
 
-                        <Alert errorKey="general" errorsSignal={errors}/>
+                        <Alert errorKey="general" errors={errors()}/>
                         <PrimaryButton type="submit" fullWidth>Login</PrimaryButton>
                     </form>
                 </div>
