@@ -17,7 +17,7 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
         modelBuilder.Entity<User>(ConfigureUsers);
         modelBuilder.Entity<Page>(ConfigurePages);
         modelBuilder.Entity<Section>(ConfigureSections);
-        
+
         base.OnModelCreating(modelBuilder);
     }
 
@@ -25,7 +25,7 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
     {
         builder.HasIndex(u => u.Email).IsUniqueWithPrefix();
     }
-    
+
     protected void ConfigurePages(EntityTypeBuilder<Page> builder)
     {
         builder
@@ -35,7 +35,7 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
             .OnDelete(DeleteBehavior.Cascade);
         builder.HasIndex(p => p.Title).IsUniqueWithPrefix();
     }
-    
+
     protected void ConfigureSections(EntityTypeBuilder<Section> builder)
     {
         builder.Property<int>("PageId");
@@ -49,8 +49,11 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
         {
             var appDbPath = Path.Combine("Database", "app.db");
 
-            if (File.Exists(appDbPath) == false) File.Create(appDbPath);
-            
+            if (File.Exists(appDbPath) == false)
+            {
+                File.Create(appDbPath).Close();
+            }
+
             optionsBuilder.UseSqlite($"Data Source={appDbPath}");
         }
     }

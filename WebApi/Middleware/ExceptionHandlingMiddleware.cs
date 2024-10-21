@@ -1,6 +1,5 @@
 using System.Net;
 using System.Text.Json;
-using Application;
 using Application.Common.Http.Exceptions;
 using Application.Common.Http.Responses;
 

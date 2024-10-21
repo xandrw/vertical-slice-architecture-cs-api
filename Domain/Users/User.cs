@@ -17,8 +17,6 @@ public class User : BaseEntity
         Contract.Requires(string.IsNullOrWhiteSpace(email) == false);
         Contract.Requires(email.Length is >= 6 and <= 60);
         Contract.Requires(Users.Role.Roles.Contains(role));
-        Contract.Requires(string.IsNullOrWhiteSpace(password) == false);
-        Contract.Requires(password.Length is >= 8 and <= 60);
 
         return new User { Email = email, Role = role }.ChangePassword(password, passwordHasher);
     }
