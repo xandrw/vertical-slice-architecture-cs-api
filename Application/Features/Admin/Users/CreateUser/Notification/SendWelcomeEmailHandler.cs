@@ -1,10 +1,10 @@
 using Application.Common.Notification;
-using Domain.Users;
+using Domain.Users.Events;
 using MediatR;
 
 namespace Application.Features.Admin.Users.CreateUser.Notification;
 
-public class UserCreatedWelcomeEmailNotificationHandler : INotificationHandler<Notification<UserCreatedDomainEvent>>
+public class SendWelcomeEmailHandler : INotificationHandler<Notification<UserCreatedDomainEvent>>
 {
     public async Task Handle(Notification<UserCreatedDomainEvent> notification, CancellationToken cancellationToken)
     {

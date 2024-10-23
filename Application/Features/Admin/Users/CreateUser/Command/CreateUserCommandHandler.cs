@@ -3,6 +3,7 @@ using Application.Common.Notification;
 using Application.Extensions;
 using Application.Interfaces;
 using Domain.Users;
+using Domain.Users.Events;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
