@@ -33,8 +33,7 @@ public class CreateUserEndpoint(IMediator mediator) : ControllerBase
     public async Task<IActionResult> Post([FromBody] CreateUserRequest request)
     {
         var user = await mediator.Send(request);
-        var response = new UserResponse { Id = user.Id, Email = user.Email, Role = user.Role };
 
-        return new CreatedResult { Value = response, ContentTypes = { "application/json" } };
+        return new CreatedResult { Value = UserResponse.CreateFrom(user), ContentTypes = { "application/json" } };
     }
 }

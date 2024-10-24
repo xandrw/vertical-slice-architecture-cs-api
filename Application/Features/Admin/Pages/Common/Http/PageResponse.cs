@@ -1,9 +1,10 @@
 using System.ComponentModel.DataAnnotations;
+using Application.Common.Http.Responses;
 using Domain.Pages;
 
 namespace Application.Features.Admin.Pages.Common.Http;
 
-public class PageResponse
+public class PageResponse : IHasFactoryMethod<PageResponse, Page>
 {
     [Required] public required int Id { get; set; }
     [Required] public required string Name { get; set; }
@@ -12,7 +13,7 @@ public class PageResponse
     [Required] public required string Slug { get; set; }
     public IList<SectionResponse> Sections { get; set; } = [];
 
-    public static PageResponse CreateFromEntity(Page page)
+    public static PageResponse CreateFrom(Page page)
     {
         var pageResponse = new PageResponse
         {

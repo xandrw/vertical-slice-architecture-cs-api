@@ -33,8 +33,8 @@ public class CreatePageEndpoint(IMediator mediator) : ControllerBase
     public async Task<IActionResult> Post([FromBody] CreatePageRequest request)
     {
         var page = await mediator.Send(request);
-        var response = PageResponse.CreateFromEntity(page);
+        var response = PageResponse.CreateFrom(page);
 
-        return new CreatedResult { StatusCode = 201, Value = response, ContentTypes = { "application/json" } };
+        return new CreatedResult { Value = response, ContentTypes = { "application/json" } };
     }
 }

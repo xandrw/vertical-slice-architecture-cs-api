@@ -34,6 +34,6 @@ public class UpdateUserEndpoint(IMediator mediator) : ControllerBase
     {
         var user = await mediator.Send(new UpdateUserCommand(id, request.Email, request.Role));
 
-        return new OkObjectResult(new UserResponse { Id = user.Id, Email = user.Email, Role = user.Role });
+        return new OkObjectResult(UserResponse.CreateFrom(user));
     }
 }

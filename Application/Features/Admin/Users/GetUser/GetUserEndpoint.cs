@@ -31,11 +31,6 @@ public class GetUserEndpoint(IDataProxy<User> dataProxy) : ControllerBase
 
         if (user is null) throw new NotFoundHttpException<User>();
 
-        return new OkObjectResult(new UserResponse
-        {
-            Id = user.Id,
-            Email = user.Email,
-            Role = user.Role
-        });
+        return new OkObjectResult(UserResponse.CreateFrom(user));
     }
 }

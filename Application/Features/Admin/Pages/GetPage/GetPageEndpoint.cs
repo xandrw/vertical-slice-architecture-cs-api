@@ -32,6 +32,6 @@ public class GetPageEndpoint(IDataProxy<Page> dataProxy) : ControllerBase
 
         if (page is null) throw new NotFoundHttpException<Page>();
 
-        return Ok(PageResponse.CreateFromEntity(page));
+        return new OkObjectResult(PageResponse.CreateFrom(page));
     }
 }

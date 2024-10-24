@@ -37,7 +37,7 @@ public class ListUsersEndpoint(IMediator mediator) : ControllerBase
 
         foreach (User user in users)
         {
-            response.Items.Add(new UserResponse { Id = user.Id, Email = user.Email, Role = user.Role });
+            response.Items.Add(UserResponse.CreateFrom(user));
         }
 
         return new OkObjectResult(response);
