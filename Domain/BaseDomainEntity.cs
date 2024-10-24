@@ -2,9 +2,9 @@ namespace Domain;
 
 public interface IEntity;
 
-public class BaseEntity : IEntity
+public class BaseDomainEntity : IEntity
 {
-    protected BaseEntity() {}
+    protected BaseDomainEntity() {}
     
     public static async Task PublishEvent(IDomainEvent domainEvent, Func<object, Task> eventPublisher)
     {

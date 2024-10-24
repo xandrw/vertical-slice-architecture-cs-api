@@ -33,9 +33,9 @@ public class GetCurrentDateTimeEndpoint(IPostmanEchoTimeClient postmanEchoTimeCl
 
         if (currentDateTime is null)
         {
-            return NoContent();
+            return new NoContentResult();
         }
         
-        return Ok(currentDateTime);
+        return new OkObjectResult(currentDateTime);
     }
 }

@@ -2,7 +2,7 @@ using Domain.Validation;
 
 namespace Domain.Pages;
 
-public class Page : BaseEntity
+public class Page : BaseDomainEntity
 {
     public int Id { get; private set; }
 

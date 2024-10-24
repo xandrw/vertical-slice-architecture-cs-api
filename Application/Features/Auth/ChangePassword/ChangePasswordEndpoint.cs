@@ -31,7 +31,7 @@ public class ChangePasswordEndpoint(IMediator mediator, AuthenticatedUser authen
         var command = MakeCommand(authenticatedUser.Id, request.Password);
         await mediator.Send(command);
 
-        return NoContent();
+        return new NoContentResult();
     }
 
     protected ChangePasswordCommand MakeCommand(int id, string password)

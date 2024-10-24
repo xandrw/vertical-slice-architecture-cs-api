@@ -24,6 +24,6 @@ public class LoginEndpoint(IMediator mediator) : ControllerBase
     {
         var response = await mediator.Send(request);
 
-        return Ok(response);
+        return new OkObjectResult(response);
     }
 }

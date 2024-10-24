@@ -13,7 +13,7 @@ public class Publisher(IMediator mediator)
 
         if (notification is null) return;
 
-        await BaseEntity.PublishEvent(
+        await BaseDomainEntity.PublishEvent(
             domainEvent,
             async _ => await mediator.Publish((INotification)notification, cancellationToken)
         );

@@ -2,7 +2,7 @@ using Domain.Validation;
 
 namespace Domain.Users;
 
-public class User : BaseEntity
+public class User : BaseDomainEntity
 {
     /** Auto-Generated and assigned to Property by EF Core, using Reflection */
     public int Id { get; private set; }

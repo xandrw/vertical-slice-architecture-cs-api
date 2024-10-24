@@ -1,12 +1,12 @@
 using Application.Common.Http.Responses;
 using Application.Features.Admin.Users.Common.Http;
+using Application.Features.Admin.Users.ListUsers.Command;
 using Application.Features.Admin.Users.ListUsers.Swagger;
-using Application.Interfaces;
 using Domain.Users;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Swashbuckle.AspNetCore.Annotations;
 using Swashbuckle.AspNetCore.Filters;
 
@@ -16,7 +16,7 @@ namespace Application.Features.Admin.Users.ListUsers;
 [Route("api/admin/users")]
 [Produces("application/json")]
 [Authorize(Roles = Role.Admin)]
-public class ListUsersEndpoint(IDataProxy<User> dataProxy) : ControllerBase
+public class ListUsersEndpoint(IMediator mediator) : ControllerBase
 {
     [HttpGet(Name = "listUsers")]
     [SwaggerOperation(Summary = "List Paginated Users", Tags = ["Admin / Users"])]
@@ -24,13 +24,10 @@ public class ListUsersEndpoint(IDataProxy<User> dataProxy) : ControllerBase
     [SwaggerResponseExample(StatusCodes.Status200OK, typeof(ListUsersResponseExample))]
     [SwaggerResponse(StatusCodes.Status401Unauthorized)]
     [SwaggerResponse(StatusCodes.Status403Forbidden)]
-    public async Task<IActionResult> Get(int pageNumber = 1, int pageSize = 10)
+    public async Task<IActionResult> Get(int pageNumber, int pageSize)
     {
-        var total = await dataProxy.Query().CountAsync();
-        var users = await dataProxy.Query()
-            .Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize)
-            .ToListAsync();
+        var (total, users) = await mediator.Send(new ListUsersCommand(pageNumber, pageSize));
+
         var response = new PaginatedListResponse<UserResponse>
         {
             TotalCount = total,
@@ -43,6 +40,6 @@ public class ListUsersEndpoint(IDataProxy<User> dataProxy) : ControllerBase
             response.Items.Add(new UserResponse { Id = user.Id, Email = user.Email, Role = user.Role });
         }
 
-        return Ok(response);
+        return new OkObjectResult(response);
     }
 }

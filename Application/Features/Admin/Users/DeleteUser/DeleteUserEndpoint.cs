@@ -23,6 +23,6 @@ public class DeleteUserEndpoint(IMediator mediator) : ControllerBase
     {
         await mediator.Send(new DeleteUserCommand(id));
 
-        return NoContent();
+        return new NoContentResult();
     }
 }

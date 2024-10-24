@@ -35,6 +35,6 @@ public class CreateUserEndpoint(IMediator mediator) : ControllerBase
         var user = await mediator.Send(request);
         var response = new UserResponse { Id = user.Id, Email = user.Email, Role = user.Role };
 
-        return new CreatedResult { StatusCode = 201, Value = response, ContentTypes = { "application/json" } };
+        return new CreatedResult { Value = response, ContentTypes = { "application/json" } };
     }
 }
