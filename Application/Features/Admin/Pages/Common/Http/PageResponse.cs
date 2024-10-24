@@ -11,7 +11,7 @@ public class PageResponse : IHasFactoryMethod<PageResponse, Page>
     [Required] public required string Title { get; set; }
     [Required] public required string Description { get; set; }
     [Required] public required string Slug { get; set; }
-    public IList<SectionResponse> Sections { get; set; } = [];
+    public IList<SectionResponse> Sections { get; init; } = [];
 
     public static PageResponse CreateFrom(Page page)
     {
@@ -26,13 +26,7 @@ public class PageResponse : IHasFactoryMethod<PageResponse, Page>
 
         foreach (var section in page.Sections)
         {
-            pageResponse.Sections.Add(new SectionResponse
-            {
-                Id = section.Id,
-                Category = section.Category,
-                Name = section.Name,
-                Value = section.Value
-            });
+            pageResponse.Sections.Add(SectionResponse.CreateFrom(section));
         }
 
         return pageResponse;
