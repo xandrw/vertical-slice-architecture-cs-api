@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Admin.Pages.CreatePage.Command;
 
-public class CreatePageCommandHandler(IDataProxy<Page> pagesProxy) : IRequestHandler<CreatePageRequest, Page>
+public class CreatePageCommandHandler(IDbProxy<Page> pagesProxy) : IRequestHandler<CreatePageRequest, Page>
 {
     public async Task<Page> Handle(CreatePageRequest request, CancellationToken cancellationToken)
     {

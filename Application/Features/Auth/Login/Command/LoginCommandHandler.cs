@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Application.Features.Auth.Login.Command;
 
 public class LoginCommandHandler(
-    IDataProxy<User> usersProxy,
+    IDbProxy<User> usersProxy,
     IJwtTokenGenerator jwtTokenGenerator,
     IPasswordHasher passwordHasher
 ) : IRequestHandler<LoginRequest, LoginResponse>

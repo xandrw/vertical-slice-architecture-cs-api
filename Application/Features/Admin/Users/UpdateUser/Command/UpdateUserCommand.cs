@@ -14,7 +14,7 @@ public class UpdateUserCommand(int id, string email, string role) : IRequest<Use
     public string Role { get; } = role;
 }
 
-public class UpdateUserCommandHandler(IDataProxy<User> usersProxy) : IRequestHandler<UpdateUserCommand, User>
+public class UpdateUserCommandHandler(IDbProxy<User> usersProxy) : IRequestHandler<UpdateUserCommand, User>
 {
     public async Task<User> Handle(UpdateUserCommand command, CancellationToken cancellationToken)
     {

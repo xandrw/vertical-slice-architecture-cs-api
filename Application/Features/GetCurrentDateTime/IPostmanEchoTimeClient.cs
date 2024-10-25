@@ -1,4 +1,4 @@
-namespace Application.Interfaces.External.PostmanEcho;
+namespace Application.Features.GetCurrentDateTime;
 
 public interface IPostmanEchoTimeClient
 {

@@ -23,7 +23,7 @@ public class UpdatePageCommand(
     public IList<UpdatePageRequestSectionItem> Sections { get; } = sections;
 }
 
-public class UpdatePageCommandHandler(IDataProxy<Page> pagesProxy) : IRequestHandler<UpdatePageCommand, Page>
+public class UpdatePageCommandHandler(IDbProxy<Page> pagesProxy) : IRequestHandler<UpdatePageCommand, Page>
 {
     public async Task<Page> Handle(UpdatePageCommand command, CancellationToken cancellationToken)
     {

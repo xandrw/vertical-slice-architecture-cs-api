@@ -17,7 +17,7 @@ namespace Application.Features.Admin.Pages.GetPage;
 [Route("api/admin/pages/{id}")]
 [Produces("application/json")]
 [Authorize(Roles = Role.Admin)]
-public class GetPageEndpoint(IDataProxy<Page> pagesProxy) : ControllerBase
+public class GetPageEndpoint(IDbProxy<Page> pagesProxy) : ControllerBase
 {
     [HttpGet(Name = "getPage")]
     [SwaggerOperation(Summary = "Get Page", Tags = ["Admin / Pages"])]

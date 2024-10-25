@@ -12,7 +12,7 @@ public class ChangePasswordCommand(int id, string password) : IRequest
     public string Password { get; } = password;
 }
 
-public class ChangePasswordCommandHandler(IDataProxy<User> usersProxy, IPasswordHasher passwordHasher)
+public class ChangePasswordCommandHandler(IDbProxy<User> usersProxy, IPasswordHasher passwordHasher)
     : IRequestHandler<ChangePasswordCommand>
 {
     public async Task Handle(ChangePasswordCommand command, CancellationToken cancellationToken)

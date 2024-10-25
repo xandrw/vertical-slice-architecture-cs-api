@@ -1,6 +1,7 @@
 using Application.Common.Http.Exceptions;
 using Application.Common.Notification;
 using Application.Extensions;
+using Application.Features.Auth;
 using Application.Interfaces;
 using Domain.Users;
 using Domain.Users.Events;
@@ -10,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Application.Features.Admin.Users.CreateUser.Command;
 
 public class CreateUserCommandHandler(
-    IDataProxy<User> usersProxy,
+    IDbProxy<User> usersProxy,
     IPasswordHasher passwordHasher,
     EventPublisher eventPublisher) : IRequestHandler<CreateUserRequest, User>
 {

@@ -11,7 +11,7 @@ public class DeleteUserCommand(int id) : IRequest
     public int Id { get; } = id;
 }
 
-public class DeleteUserCommandHandler(IDataProxy<User> usersProxy) : IRequestHandler<DeleteUserCommand>
+public class DeleteUserCommandHandler(IDbProxy<User> usersProxy) : IRequestHandler<DeleteUserCommand>
 {
     public async Task Handle(DeleteUserCommand command, CancellationToken cancellationToken)
     {

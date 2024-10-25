@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence;
 
-public class DataProxy<TEntity>(DatabaseContext context) : IDataProxy<TEntity> where TEntity : class, IEntity
+public class DbProxy<TEntity>(DatabaseContext context) : IDbProxy<TEntity> where TEntity : class, IEntity
 {
     public IQueryable<TEntity> Query()
     {

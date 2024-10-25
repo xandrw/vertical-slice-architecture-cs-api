@@ -11,7 +11,7 @@ public class ListUsersCommand(int pageNumber = 1, int pageSize = 10) : IRequest<
     public int PageSize { get; } = pageSize;
 }
 
-public class ListUsersCommandHandler(IDataProxy<User> usersProxy)
+public class ListUsersCommandHandler(IDbProxy<User> usersProxy)
     : IRequestHandler<ListUsersCommand, (int total, IList<User> users)>
 {
     public async Task<(int, IList<User>)> Handle(ListUsersCommand command, CancellationToken cancellationToken)

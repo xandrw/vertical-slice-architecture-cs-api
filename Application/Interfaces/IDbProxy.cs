@@ -2,7 +2,7 @@ using Domain;
 
 namespace Application.Interfaces;
 
-public interface IDataProxy<TEntity> where TEntity : IEntity
+public interface IDbProxy<TEntity> where TEntity : IEntity
 {
     IQueryable<TEntity> Query();
     void Add(TEntity entity);

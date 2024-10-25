@@ -1,4 +1,4 @@
-using Application.Interfaces.External.PostmanEcho;
+using Application.Features.GetCurrentDateTime;
 
 namespace Infrastructure.Services.Http.PostmanEcho;
 

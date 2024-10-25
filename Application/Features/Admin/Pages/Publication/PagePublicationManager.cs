@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Admin.Pages.Publication;
 
-public class PagePublicationManager(IDataProxy<Page> pagesProxy)
+public class PagePublicationManager(IDbProxy<Page> pagesProxy)
 {
     public async Task PublishPageById(int id)
     {

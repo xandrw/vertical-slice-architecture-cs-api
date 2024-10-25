@@ -1,6 +1,6 @@
 using Application.Features.Auth;
+using Application.Features.GetCurrentDateTime;
 using Application.Interfaces;
-using Application.Interfaces.External.PostmanEcho;
 using Infrastructure.Persistence;
 using Infrastructure.Services;
 using Infrastructure.Services.Http.PostmanEcho;
@@ -16,7 +16,7 @@ public static class InfrastructureConfig
     {
         services.AddDbContext<DatabaseContext>(o => o.UseSqlite(config.GetConnectionString("DefaultConnection")));
         // TODO: Maybe convert to Repository pattern
-        services.AddScoped(typeof(IDataProxy<>), typeof(DataProxy<>));
+        services.AddScoped(typeof(IDbProxy<>), typeof(DbProxy<>));
 
         services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
         services.AddScoped<IPasswordHasher, HmacSha512PasswordHasher>();

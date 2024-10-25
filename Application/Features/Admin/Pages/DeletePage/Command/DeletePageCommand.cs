@@ -11,7 +11,7 @@ public class DeletePageCommand(int id) : IRequest
     public int Id { get; } = id;
 }
 
-public class DeletePageCommandHandler(IDataProxy<Page> pagesProxy) : IRequestHandler<DeletePageCommand>
+public class DeletePageCommandHandler(IDbProxy<Page> pagesProxy) : IRequestHandler<DeletePageCommand>
 {
     public async Task Handle(DeletePageCommand command, CancellationToken cancellationToken)
     {

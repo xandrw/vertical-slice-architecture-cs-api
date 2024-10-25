@@ -16,7 +16,7 @@ namespace Application.Features.Admin.Users.GetUser;
 [Route("api/admin/users/{id}")]
 [Produces("application/json")]
 [Authorize(Roles = Role.Admin)]
-public class GetUserEndpoint(IDataProxy<User> usersProxy) : ControllerBase
+public class GetUserEndpoint(IDbProxy<User> usersProxy) : ControllerBase
 {
     [HttpGet(Name = "getUser")]
     [SwaggerOperation(Summary = "Get User", Tags = ["Admin / Users"])]
