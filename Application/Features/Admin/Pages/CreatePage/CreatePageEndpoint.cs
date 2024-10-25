@@ -1,8 +1,7 @@
 using Application.Common.Http.Responses;
 using Application.Common.Http.Swagger;
-using Application.Features.Admin.Pages.Common.Http;
-using Application.Features.Admin.Pages.Common.Http.Swagger;
-using Application.Features.Admin.Pages.CreatePage.Command;
+using Application.Features.Admin.Pages.Common;
+using Application.Features.Admin.Pages.Common.Swagger;
 using Application.Features.Admin.Pages.CreatePage.Swagger;
 using Domain.Users;
 using MediatR;

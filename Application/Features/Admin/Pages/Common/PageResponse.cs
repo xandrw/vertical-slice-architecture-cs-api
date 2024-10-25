@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using Application.Common.Http.Responses;
 using Domain.Pages;
 
-namespace Application.Features.Admin.Pages.Common.Http;
+namespace Application.Features.Admin.Pages.Common;
 
 public class PageResponse : IHasFactoryMethod<PageResponse, Page>
 {

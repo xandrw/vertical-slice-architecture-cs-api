@@ -28,7 +28,7 @@ public static class SwaggerConfig
                 {
                     Title = "VS+Clean Architecture API",
                     Version = "v1",
-                    Description = "Vertical Slice and Clean Architecture Together"
+                    Description = "Vertical Slice and Clean Architecture"
                 });
         });
         services.AddSwaggerExamplesFromAssemblyOf(typeof(ApplicationConfig));

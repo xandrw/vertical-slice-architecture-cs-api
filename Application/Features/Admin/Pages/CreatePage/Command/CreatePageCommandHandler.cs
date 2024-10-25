@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Admin.Pages.CreatePage.Command;
 
-public class CreatePageCommandHandler(IDataProxy<Page> dataProxy) : IRequestHandler<CreatePageRequest, Page>
+public class CreatePageCommandHandler(IDataProxy<Page> pagesProxy) : IRequestHandler<CreatePageRequest, Page>
 {
     public async Task<Page> Handle(CreatePageRequest request, CancellationToken cancellationToken)
     {
@@ -20,8 +20,8 @@ public class CreatePageCommandHandler(IDataProxy<Page> dataProxy) : IRequestHand
 
         try
         {
-            dataProxy.Add(page);
-            await dataProxy.SaveChangesAsync(cancellationToken);
+            pagesProxy.Add(page);
+            await pagesProxy.SaveChangesAsync(cancellationToken);
         }
         catch (DbUpdateException e) when (e.HasUniqueConstraintError())
         {

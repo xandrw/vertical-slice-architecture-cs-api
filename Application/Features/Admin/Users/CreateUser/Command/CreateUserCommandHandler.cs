@@ -9,8 +9,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Admin.Users.CreateUser.Command;
 
-public class CreateUserCommandHandler(IDataProxy<User> dataProxy, IPasswordHasher passwordHasher, Publisher publisher)
-    : IRequestHandler<CreateUserRequest, User>
+public class CreateUserCommandHandler(
+    IDataProxy<User> usersProxy,
+    IPasswordHasher passwordHasher,
+    EventPublisher eventPublisher) : IRequestHandler<CreateUserRequest, User>
 {
     public async Task<User> Handle(CreateUserRequest request, CancellationToken cancellationToken)
     {
@@ -18,9 +20,9 @@ public class CreateUserCommandHandler(IDataProxy<User> dataProxy, IPasswordHashe
 
         try
         {
-            dataProxy.Add(user);
-            await dataProxy.SaveChangesAsync(cancellationToken);
-            await publisher.PublishDomainEvent(new UserCreatedDomainEvent(user), cancellationToken);
+            usersProxy.Add(user);
+            await usersProxy.SaveChangesAsync(cancellationToken);
+            await eventPublisher.PublishDomainEvent(new UserCreatedDomainEvent(user), cancellationToken);
         }
         catch (DbUpdateException e) when (e.HasUniqueConstraintError())
         {

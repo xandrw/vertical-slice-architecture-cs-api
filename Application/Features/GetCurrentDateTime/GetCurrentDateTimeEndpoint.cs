@@ -17,16 +17,17 @@ public class GetCurrentDateTimeEndpoint(IPostmanEchoTimeClient postmanEchoTimeCl
     [HttpGet(Name = "getCurrentDateTime")]
     [SwaggerOperation(Summary = "Get Current Date and Time", Tags = ["Custom"])]
     [SwaggerResponse(
-        statusCode: StatusCodes.Status200OK,
+        StatusCodes.Status200OK,
         Description = "Current Date and Time Retrieved: Sat, 05 Oct 2024 22:47:16 GMT",
         Type = typeof(string)
     )]
     [SwaggerResponseExample(StatusCodes.Status200OK, typeof(string))]
     [SwaggerResponse(
-        statusCode: StatusCodes.Status204NoContent,
+        StatusCodes.Status204NoContent,
         Description = "External Service could not be reached or failed to respond"
     )]
     [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+    [SwaggerResponse(StatusCodes.Status403Forbidden)]
     public async Task<IActionResult> Get()
     {
         var currentDateTime = await postmanEchoTimeClient.Now();
@@ -35,7 +36,7 @@ public class GetCurrentDateTimeEndpoint(IPostmanEchoTimeClient postmanEchoTimeCl
         {
             return new NoContentResult();
         }
-        
+
         return new OkObjectResult(currentDateTime);
     }
 }

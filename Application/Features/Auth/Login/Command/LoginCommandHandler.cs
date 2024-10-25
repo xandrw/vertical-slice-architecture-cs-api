@@ -7,14 +7,14 @@ using Microsoft.EntityFrameworkCore;
 namespace Application.Features.Auth.Login.Command;
 
 public class LoginCommandHandler(
-    IDataProxy<User> dataProxy,
+    IDataProxy<User> usersProxy,
     IJwtTokenGenerator jwtTokenGenerator,
     IPasswordHasher passwordHasher
 ) : IRequestHandler<LoginRequest, LoginResponse>
 {
     public async Task<LoginResponse> Handle(LoginRequest request, CancellationToken cancellationToken)
     {
-        var user = await dataProxy.Query().SingleOrDefaultAsync(u => u.Email == request.Email, cancellationToken);
+        var user = await usersProxy.Query().SingleOrDefaultAsync(u => u.Email == request.Email, cancellationToken);
 
         if (user is null || !user.VerifyPassword(request.Password, passwordHasher.VerifyPassword))
         {

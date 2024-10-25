@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using Application.Common.Http.Responses;
 using Domain.Users;
 
-namespace Application.Features.Admin.Users.Common.Http;
+namespace Application.Features.Admin.Users.Common;
 
 public class UserResponse : IHasFactoryMethod<UserResponse, User>
 {

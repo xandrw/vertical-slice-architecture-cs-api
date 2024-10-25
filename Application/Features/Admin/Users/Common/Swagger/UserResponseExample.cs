@@ -1,6 +1,6 @@
 using Swashbuckle.AspNetCore.Filters;
 
-namespace Application.Features.Admin.Users.Common.Http.Swagger;
+namespace Application.Features.Admin.Users.Common.Swagger;
 
 class UserResponseExample : IExamplesProvider<UserResponse>
 {

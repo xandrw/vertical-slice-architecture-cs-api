@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using Domain.Pages;
 using MediatR;
 
-namespace Application.Features.Admin.Pages.CreatePage.Command;
+namespace Application.Features.Admin.Pages.CreatePage;
 
 public class CreatePageRequest(string name, string title, string description) : IRequest<Page>
 {
@@ -20,5 +20,5 @@ public class CreatePageRequest(string name, string title, string description) : 
     [MinLength(3, ErrorMessage = "error.name.min_length")]
     public string Description { get; } = description;
 
-    public IList<CreatePageRequestSectionItem> Sections { get; set; } = new List<CreatePageRequestSectionItem>();
+    public IList<CreatePageRequestSectionItem> Sections { get; init; } = [];
 }

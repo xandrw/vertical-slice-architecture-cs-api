@@ -1,6 +1,6 @@
 using Application.Common.Http.Responses;
-using Application.Features.Admin.Users.Common.Http;
-using Application.Features.Admin.Users.Common.Http.Swagger;
+using Application.Features.Admin.Users.Common;
+using Application.Features.Admin.Users.Common.Swagger;
 using Application.Features.Admin.Users.UpdateUser.Command;
 using Application.Features.Admin.Users.UpdateUser.Swagger;
 using Domain.Users;

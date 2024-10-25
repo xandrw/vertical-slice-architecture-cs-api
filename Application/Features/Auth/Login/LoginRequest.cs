@@ -5,13 +5,13 @@ namespace Application.Features.Auth.Login;
 
 public class LoginRequest(string email, string password) : IRequest<LoginResponse>
 {
-    [Required]
-    [EmailAddress]
-    [MinLength(6)]
+    [Required(ErrorMessage = "error.email.required")]
+    [EmailAddress(ErrorMessage = "error.email.invalid")]
+    [MinLength(6, ErrorMessage = "error.email.tooShort")]
     public string Email { get; } = email;
     
-    [Required]
-    [MinLength(8)]
-    [MaxLength(50)]
+    [Required(ErrorMessage = "error.password.required")]
+    [MinLength(8, ErrorMessage = "error.password.tooShort")]
+    [MaxLength(50, ErrorMessage = "error.password.tooLong")]
     public string Password { get; } = password;
 }

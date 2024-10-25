@@ -1,5 +1,6 @@
 using Application.Common;
 using Application.Common.Notification;
+using Application.Features.Admin.Pages.Publication;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Application;
@@ -10,6 +11,7 @@ public static class ApplicationConfig
     {
         services.AddMediatR(c => c.RegisterServicesFromAssembly(typeof(ApplicationConfig).Assembly));
         services.AddScoped<AuthenticatedUser>();
-        services.AddScoped<Publisher>();
+        services.AddScoped<EventPublisher>();
+        services.AddScoped<PagePublicationManager>();
     }
 }

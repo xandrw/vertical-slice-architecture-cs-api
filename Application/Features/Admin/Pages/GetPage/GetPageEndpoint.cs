@@ -1,6 +1,6 @@
 using Application.Common.Http.Exceptions;
-using Application.Features.Admin.Pages.Common.Http;
-using Application.Features.Admin.Pages.Common.Http.Swagger;
+using Application.Features.Admin.Pages.Common;
+using Application.Features.Admin.Pages.Common.Swagger;
 using Application.Interfaces;
 using Domain.Pages;
 using Domain.Users;
@@ -17,7 +17,7 @@ namespace Application.Features.Admin.Pages.GetPage;
 [Route("api/admin/pages/{id}")]
 [Produces("application/json")]
 [Authorize(Roles = Role.Admin)]
-public class GetPageEndpoint(IDataProxy<Page> dataProxy) : ControllerBase
+public class GetPageEndpoint(IDataProxy<Page> pagesProxy) : ControllerBase
 {
     [HttpGet(Name = "getPage")]
     [SwaggerOperation(Summary = "Get Page", Tags = ["Admin / Pages"])]
@@ -28,7 +28,7 @@ public class GetPageEndpoint(IDataProxy<Page> dataProxy) : ControllerBase
     [SwaggerResponse(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Get(int id)
     {
-        var page = await dataProxy.Query().Include(p => p.Sections).FirstOrDefaultAsync(u => u.Id == id);
+        var page = await pagesProxy.Query().Include(p => p.Sections).SingleOrDefaultAsync(u => u.Id == id);
 
         if (page is null) throw new NotFoundHttpException<Page>();
 

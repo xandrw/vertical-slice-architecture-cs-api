@@ -1,5 +1,5 @@
 using Application.Common.Http.Responses;
-using Application.Features.Admin.Users.Common.Http;
+using Application.Features.Admin.Users.Common;
 using Swashbuckle.AspNetCore.Filters;
 
 namespace Application.Features.Admin.Users.ListUsers.Swagger;

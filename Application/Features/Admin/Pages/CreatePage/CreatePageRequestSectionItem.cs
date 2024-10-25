@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Application.Features.Admin.Pages.CreatePage.Command;
+namespace Application.Features.Admin.Pages.CreatePage;
 
 public class CreatePageRequestSectionItem(string category, string name, string value)
 {

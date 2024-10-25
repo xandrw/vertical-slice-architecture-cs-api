@@ -1,7 +1,7 @@
 using Application.Common.Http.Responses;
 using Application.Common.Http.Swagger;
-using Application.Features.Admin.Users.Common.Http;
-using Application.Features.Admin.Users.Common.Http.Swagger;
+using Application.Features.Admin.Users.Common;
+using Application.Features.Admin.Users.Common.Swagger;
 using Application.Features.Admin.Users.CreateUser.Command;
 using Application.Features.Admin.Users.CreateUser.Swagger;
 using Domain.Users;

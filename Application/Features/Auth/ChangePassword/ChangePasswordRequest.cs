@@ -4,8 +4,8 @@ namespace Application.Features.Auth.ChangePassword;
 
 public class ChangePasswordRequest
 {
-    [Required]
-    [MinLength(8)]
-    [MaxLength(50)]
+    [Required(ErrorMessage = "error.password.required")]
+    [MinLength(8, ErrorMessage = "error.password.tooShort")]
+    [MaxLength(50, ErrorMessage = "error.password.tooLong")]
     public required string Password { get; set; }
 }

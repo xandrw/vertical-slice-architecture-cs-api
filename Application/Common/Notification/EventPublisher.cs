@@ -4,7 +4,7 @@ using static System.Activator;
 
 namespace Application.Common.Notification;
 
-public class Publisher(IMediator mediator)
+public class EventPublisher(IMediator mediator)
 {
     public async Task PublishDomainEvent(IDomainEvent domainEvent, CancellationToken cancellationToken)
     {
