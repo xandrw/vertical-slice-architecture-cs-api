@@ -17,7 +17,7 @@ public class PagePublicationManager(IDbProxy<Page> pagesProxy)
 
         await pagesProxy.SaveChangesAsync();
     }
-    
+
     public async Task UnpublishPageById(int id)
     {
         var page = await pagesProxy.Query().Include(p => p.Sections).SingleOrDefaultAsync(u => u.Id == id);
