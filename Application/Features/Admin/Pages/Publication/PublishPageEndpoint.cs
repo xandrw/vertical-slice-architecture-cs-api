@@ -17,7 +17,7 @@ public class PublishPageEndpoint(PagePublicationManager pagePublicationManager) 
     [HttpPatch(Name = "publishPage")]
     [SwaggerOperation(Summary = "Publish Page", Tags = ["Admin / Pages"])]
     [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(PublicationResponse))]
-    [SwaggerResponseExample(200, typeof(PublicationResponseExample))]
+    [SwaggerResponseExample(StatusCodes.Status200OK, typeof(PublicationResponseExample))]
     [SwaggerResponse(StatusCodes.Status401Unauthorized)]
     [SwaggerResponse(StatusCodes.Status403Forbidden)]
     [SwaggerResponse(StatusCodes.Status404NotFound)]
