@@ -33,7 +33,7 @@ public class Page : BaseDomainEntity
         Contract.Requires(!string.IsNullOrWhiteSpace(name) && name.Length > 0);
         Contract.Requires(!string.IsNullOrWhiteSpace(title) && title.Length > 0);
         Contract.Requires(!string.IsNullOrWhiteSpace(description) && description.Length > 0);
-        
+
         Name = name;
         Title = title;
         Description = description;
@@ -43,12 +43,14 @@ public class Page : BaseDomainEntity
 
     public Page Publish()
     {
+        if (PublishedAt is not null) return this;
         PublishedAt = DateTime.UtcNow;
         return this;
     }
 
     public Page Unpublish()
     {
+        if (PublishedAt is null) return this;
         PublishedAt = null;
         return this;
     }
@@ -68,7 +70,7 @@ public class Page : BaseDomainEntity
 
         return this;
     }
-    
+
     public Page UpdateSections(IImmutableList<Section> sections)
     {
         foreach (Section section in sections)

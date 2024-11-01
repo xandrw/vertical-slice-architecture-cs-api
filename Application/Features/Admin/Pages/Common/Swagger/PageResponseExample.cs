@@ -13,6 +13,7 @@ public class PageResponseExample : IExamplesProvider<PageResponse>
             Title = "Page Title",
             Description = "Page Description",
             Slug = "page-title",
+            PublishedAt = null,
             Sections =
             [
                 new SectionResponse

@@ -11,6 +11,7 @@ public class PageResponse : IHasFactoryMethod<PageResponse, Page>
     [Required] public required string Title { get; set; }
     [Required] public required string Description { get; set; }
     [Required] public required string Slug { get; set; }
+    [Required] public required DateTime? PublishedAt { get; set; }
     public IList<SectionResponse> Sections { get; init; } = [];
 
     public static PageResponse CreateFrom(Page page)
@@ -21,7 +22,8 @@ public class PageResponse : IHasFactoryMethod<PageResponse, Page>
             Name = page.Name,
             Title = page.Title,
             Description = page.Description,
-            Slug = page.Slug
+            Slug = page.Slug,
+            PublishedAt = page.PublishedAt
         };
 
         foreach (var section in page.Sections)

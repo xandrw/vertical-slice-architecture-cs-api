@@ -7,20 +7,22 @@ namespace Application.Features.Admin.Pages.Publication;
 
 public class PagePublicationManager(IDbProxy<Page> pagesProxy)
 {
-    public async Task PublishPageById(int id)
+    public async Task<DateTime?> PublishPageById(int id)
     {
-        var page = await pagesProxy.Query().Include(p => p.Sections).SingleOrDefaultAsync(u => u.Id == id);
+        var page = await pagesProxy.Query().SingleOrDefaultAsync(u => u.Id == id);
 
         if (page is null) throw new NotFoundHttpException<Page>();
 
         page.Publish();
 
         await pagesProxy.SaveChangesAsync();
+
+        return page.PublishedAt;
     }
 
     public async Task UnpublishPageById(int id)
     {
-        var page = await pagesProxy.Query().Include(p => p.Sections).SingleOrDefaultAsync(u => u.Id == id);
+        var page = await pagesProxy.Query().SingleOrDefaultAsync(u => u.Id == id);
 
         if (page is null) throw new NotFoundHttpException<Page>();
 
