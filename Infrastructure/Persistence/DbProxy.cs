@@ -26,9 +26,9 @@ public class DbProxy<TEntity>(DatabaseContext context) : IDbProxy<TEntity> where
         context.Set<TEntity>().Update(entity);
     }
 
-    public Task SaveChangesAsync(CancellationToken cancellationToken = default)
+    public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        return context.SaveChangesAsync(cancellationToken);
+        return await context.SaveChangesAsync(cancellationToken);
     }
 
     public async Task<IEnumerable<TEntity>> ReadSqlAsync(

@@ -6,8 +6,9 @@ import PrimaryButton from "../Components/PrimaryButton";
 import Alert from "../Components/Alert";
 import api from "../api";
 import {useNavigate} from "@solidjs/router";
+import {Component} from "solid-js";
 
-const Login = () => {
+const Login: Component = () => {
     const navigate = useNavigate();
     const [email, setEmail] = createSignal('');
     const [password, setPassword] = createSignal('');
