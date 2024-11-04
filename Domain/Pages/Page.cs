@@ -57,6 +57,7 @@ public class Page : BaseDomainEntity
 
     public Page AddSection(Section section)
     {
+        Contract.Requires(Sections.All(s => s.Name != section.Name), "error.section.exists");
         _sections.Add(section);
         return this;
     }
@@ -75,6 +76,7 @@ public class Page : BaseDomainEntity
     {
         foreach (Section section in sections)
         {
+            Contract.Requires(!Sections.Any(s => s.Name == section.Name && s.Id != section.Id), "error.section.exists");
             _sections.First(s => s.Id == section.Id).Update(section.Category, section.Name, section.Value);
         }
 

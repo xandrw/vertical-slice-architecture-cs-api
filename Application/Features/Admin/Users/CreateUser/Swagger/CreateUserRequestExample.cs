@@ -1,4 +1,3 @@
-using Application.Features.Admin.Users.CreateUser.Command;
 using Swashbuckle.AspNetCore.Filters;
 
 namespace Application.Features.Admin.Users.CreateUser.Swagger;
