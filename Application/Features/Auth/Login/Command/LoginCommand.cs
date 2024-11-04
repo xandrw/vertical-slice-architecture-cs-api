@@ -9,14 +9,14 @@ namespace Application.Features.Auth.Login.Command;
 public record LoginCommand(string Email, string Password) : IRequest<LoginResponse>;
 
 public class LoginCommandHandler(
-    IDbProxy<User> usersProxy,
+    IRepository<User> usersRepository,
     IJwtTokenGenerator jwtTokenGenerator,
     IPasswordHasher passwordHasher
 ) : IRequestHandler<LoginCommand, LoginResponse>
 {
     public async Task<LoginResponse> Handle(LoginCommand command, CancellationToken cancellationToken)
     {
-        var user = await usersProxy.Query().SingleOrDefaultAsync(u => u.Email == command.Email, cancellationToken);
+        var user = await usersRepository.Query().SingleOrDefaultAsync(u => u.Email == command.Email, cancellationToken);
 
         if (user is null || !user.VerifyPassword(command.Password, passwordHasher.VerifyPassword))
         {

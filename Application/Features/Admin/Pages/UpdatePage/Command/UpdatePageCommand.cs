@@ -31,11 +31,11 @@ public record UpdatePageCommand(
 
 public record UpdatePageCommandSectionItem(int? Id, string Category, string Name, string Value);
 
-public class UpdatePageCommandHandler(IDbProxy<Page> pagesProxy) : IRequestHandler<UpdatePageCommand, Page>
+public class UpdatePageCommandHandler(IRepository<Page> pagesRepository) : IRequestHandler<UpdatePageCommand, Page>
 {
     public async Task<Page> Handle(UpdatePageCommand command, CancellationToken cancellationToken)
     {
-        var page = await pagesProxy.Query()
+        var page = await pagesRepository.Query()
             .Include(p => p.Sections)
             .SingleOrDefaultAsync(p => p.Id == command.Id, cancellationToken);
 
@@ -66,7 +66,7 @@ public class UpdatePageCommandHandler(IDbProxy<Page> pagesProxy) : IRequestHandl
 
         try
         {
-            await pagesProxy.SaveChangesAsync(cancellationToken);
+            await pagesRepository.SaveChangesAsync(cancellationToken);
         }
         catch (DbUpdateException e) when (e.HasUniqueConstraintError())
         {

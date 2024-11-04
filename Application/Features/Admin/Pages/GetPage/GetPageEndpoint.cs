@@ -17,7 +17,7 @@ namespace Application.Features.Admin.Pages.GetPage;
 [Route("api/admin/pages/{id}")]
 [Produces("application/json")]
 [Authorize(Roles = Role.Admin)]
-public class GetPageEndpoint(IDbProxy<Page> pagesProxy) : ControllerBase
+public class GetPageEndpoint(IRepository<Page> pagesRepository) : ControllerBase
 {
     [HttpGet(Name = "getPage")]
     [SwaggerOperation(Summary = "Get Page", Tags = ["Admin / Pages"])]
@@ -28,7 +28,7 @@ public class GetPageEndpoint(IDbProxy<Page> pagesProxy) : ControllerBase
     [SwaggerResponse(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Get(int id)
     {
-        var page = await pagesProxy.Query().Include(p => p.Sections).SingleOrDefaultAsync(u => u.Id == id);
+        var page = await pagesRepository.Query().Include(p => p.Sections).SingleOrDefaultAsync(u => u.Id == id);
 
         if (page is null) throw new NotFoundHttpException<Page>();
 

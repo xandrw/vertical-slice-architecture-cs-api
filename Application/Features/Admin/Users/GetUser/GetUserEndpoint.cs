@@ -16,7 +16,7 @@ namespace Application.Features.Admin.Users.GetUser;
 [Route("api/admin/users/{id}")]
 [Produces("application/json")]
 [Authorize(Roles = Role.Admin)]
-public class GetUserEndpoint(IDbProxy<User> usersProxy) : ControllerBase
+public class GetUserEndpoint(IRepository<User> usersRepository) : ControllerBase
 {
     [HttpGet(Name = "getUser")]
     [SwaggerOperation(Summary = "Get User", Tags = ["Admin / Users"])]
@@ -27,7 +27,7 @@ public class GetUserEndpoint(IDbProxy<User> usersProxy) : ControllerBase
     [SwaggerResponse(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Get(int id)
     {
-        var user = await usersProxy.Query().FirstOrDefaultAsync(u => u.Id == id);
+        var user = await usersRepository.Query().FirstOrDefaultAsync(u => u.Id == id);
 
         if (user is null) throw new NotFoundHttpException<User>();
 

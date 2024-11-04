@@ -8,11 +8,11 @@ namespace Application.Features.Admin.Users.DeleteUser.Command;
 
 public record DeleteUserCommand(int Id) : IRequest;
 
-public class DeleteUserCommandHandler(IDbProxy<User> usersProxy) : IRequestHandler<DeleteUserCommand>
+public class DeleteUserCommandHandler(IRepository<User> usersreRepository) : IRequestHandler<DeleteUserCommand>
 {
     public async Task Handle(DeleteUserCommand command, CancellationToken cancellationToken)
     {
-        var user = await usersProxy.Query()
+        var user = await usersreRepository.Query()
             .SingleOrDefaultAsync(u => u.Id == command.Id, cancellationToken);
 
         if (user is null)
@@ -20,7 +20,7 @@ public class DeleteUserCommandHandler(IDbProxy<User> usersProxy) : IRequestHandl
             throw new NotFoundHttpException<User>();
         }
 
-        usersProxy.Remove(user);
-        await usersProxy.SaveChangesAsync(cancellationToken);
+        usersreRepository.Remove(user);
+        await usersreRepository.SaveChangesAsync(cancellationToken);
     }
 }

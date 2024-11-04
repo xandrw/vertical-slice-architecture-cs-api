@@ -10,9 +10,11 @@ public class AuthenticatedUser(IHttpContextAccessor httpContextAccessor)
         httpContextAccessor.HttpContext?.User ?? throw new UnauthorizedHttpException();
 
     public int Id => int.Parse(
-        _user.FindFirstValue(ClaimTypes.NameIdentifier) ?? throw new UnauthorizedHttpException());
-    
+        _user.FindFirstValue(ClaimTypes.NameIdentifier) ??
+        throw new UnauthorizedHttpException()
+    );
+
     public string Email => _user.FindFirstValue(ClaimTypes.Email) ?? throw new UnauthorizedHttpException();
-    
+
     public string Role => _user.FindFirstValue(ClaimTypes.Role) ?? throw new UnauthorizedHttpException();
 }

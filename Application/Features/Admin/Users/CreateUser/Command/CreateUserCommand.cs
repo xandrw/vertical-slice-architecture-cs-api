@@ -19,7 +19,7 @@ public record CreateUserCommand(string Email, string Role, string Password) : IR
 }
 
 public class CreateUserCommandHandler(
-    IDbProxy<User> usersProxy,
+    IRepository<User> usersRepository,
     IPasswordHasher passwordHasher,
     EventPublisher eventPublisher) : IRequestHandler<CreateUserCommand, User>
 {
@@ -29,8 +29,8 @@ public class CreateUserCommandHandler(
 
         try
         {
-            usersProxy.Add(user);
-            await usersProxy.SaveChangesAsync(cancellationToken);
+            usersRepository.Add(user);
+            await usersRepository.SaveChangesAsync(cancellationToken);
             await eventPublisher.PublishDomainEvent(new UserCreatedDomainEvent(user), cancellationToken);
         }
         catch (DbUpdateException e) when (e.HasUniqueConstraintError())

@@ -8,12 +8,12 @@ namespace Application.Features.Auth.ChangePassword.Command;
 
 public record ChangePasswordCommand(int Id, string Password) : IRequest;
 
-public class ChangePasswordCommandHandler(IDbProxy<User> usersProxy, IPasswordHasher passwordHasher)
+public class ChangePasswordCommandHandler(IRepository<User> usersRepository, IPasswordHasher passwordHasher)
     : IRequestHandler<ChangePasswordCommand>
 {
     public async Task Handle(ChangePasswordCommand command, CancellationToken cancellationToken)
     {
-        var user = await usersProxy.Query().SingleOrDefaultAsync(u => u.Id == command.Id, cancellationToken);
+        var user = await usersRepository.Query().SingleOrDefaultAsync(u => u.Id == command.Id, cancellationToken);
 
         if (user is null)
         {
@@ -22,6 +22,6 @@ public class ChangePasswordCommandHandler(IDbProxy<User> usersProxy, IPasswordHa
 
         user.ChangePassword(command.Password, passwordHasher.HashPassword);
 
-        await usersProxy.SaveChangesAsync(cancellationToken);
+        await usersRepository.SaveChangesAsync(cancellationToken);
     }
 }

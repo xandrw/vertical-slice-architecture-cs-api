@@ -15,8 +15,7 @@ public static class InfrastructureConfig
     public static void AddInfrastructure(this IServiceCollection services, IConfiguration config)
     {
         services.AddDbContext<DatabaseContext>(o => o.UseSqlite(config.GetConnectionString("DefaultConnection")));
-        // TODO: Maybe convert to Repository pattern
-        services.AddScoped(typeof(IDbProxy<>), typeof(DbProxy<>));
+        services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
         services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
         services.AddScoped<IPasswordHasher, HmacSha512PasswordHasher>();

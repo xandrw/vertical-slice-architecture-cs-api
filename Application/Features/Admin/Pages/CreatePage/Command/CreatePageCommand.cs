@@ -28,7 +28,7 @@ public record CreatePageCommand(
 
 public record CreatePageCommandSectionItem(string Category, string Name, string Value);
 
-public class CreatePageCommandHandler(IDbProxy<Page> pagesProxy) : IRequestHandler<CreatePageCommand, Page>
+public class CreatePageCommandHandler(IRepository<Page> pagesRepository) : IRequestHandler<CreatePageCommand, Page>
 {
     public async Task<Page> Handle(CreatePageCommand command, CancellationToken cancellationToken)
     {
@@ -41,8 +41,8 @@ public class CreatePageCommandHandler(IDbProxy<Page> pagesProxy) : IRequestHandl
 
         try
         {
-            pagesProxy.Add(page);
-            await pagesProxy.SaveChangesAsync(cancellationToken);
+            pagesRepository.Add(page);
+            await pagesRepository.SaveChangesAsync(cancellationToken);
         }
         catch (DbUpdateException e) when (e.HasUniqueConstraintError())
         {

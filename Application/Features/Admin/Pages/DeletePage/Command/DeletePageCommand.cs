@@ -8,11 +8,11 @@ namespace Application.Features.Admin.Pages.DeletePage.Command;
 
 public record DeletePageCommand(int Id) : IRequest;
 
-public class DeletePageCommandHandler(IDbProxy<Page> pagesProxy) : IRequestHandler<DeletePageCommand>
+public class DeletePageCommandHandler(IRepository<Page> pagesRepository) : IRequestHandler<DeletePageCommand>
 {
     public async Task Handle(DeletePageCommand command, CancellationToken cancellationToken)
     {
-        var page = await pagesProxy.Query()
+        var page = await pagesRepository.Query()
             .SingleOrDefaultAsync(p => p.Id == command.Id, cancellationToken);
 
         if (page is null)
@@ -20,7 +20,7 @@ public class DeletePageCommandHandler(IDbProxy<Page> pagesProxy) : IRequestHandl
             throw new NotFoundHttpException<Page>();
         }
         
-        pagesProxy.Remove(page);
-        await pagesProxy.SaveChangesAsync(cancellationToken);
+        pagesRepository.Remove(page);
+        await pagesRepository.SaveChangesAsync(cancellationToken);
     }
 }
