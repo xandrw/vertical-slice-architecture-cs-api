@@ -24,7 +24,7 @@ public class ListUsersEndpoint(IMediator mediator) : ControllerBase
     [SwaggerResponseExample(StatusCodes.Status200OK, typeof(ListUsersResponseExample))]
     [SwaggerResponse(StatusCodes.Status401Unauthorized)]
     [SwaggerResponse(StatusCodes.Status403Forbidden)]
-    public async Task<IActionResult> Get(int pageNumber, int pageSize)
+    public async Task<IActionResult> Get(int pageNumber = 1, int pageSize = 10)
     {
         var (total, users) = await mediator.Send(new ListUsersCommand(pageNumber, pageSize));
 
