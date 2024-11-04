@@ -2,6 +2,7 @@ using Application.Common.Http.Responses;
 using Application.Common.Http.Swagger;
 using Application.Features.Admin.Pages.Common;
 using Application.Features.Admin.Pages.Common.Swagger;
+using Application.Features.Admin.Pages.CreatePage.Command;
 using Application.Features.Admin.Pages.CreatePage.Swagger;
 using Domain.Users;
 using MediatR;
@@ -31,9 +32,14 @@ public class CreatePageEndpoint(IMediator mediator) : ControllerBase
     [SwaggerRequestExample(typeof(CreatePageRequest), typeof(CreatePageRequestExample))]
     public async Task<IActionResult> Post([FromBody] CreatePageRequest request)
     {
-        var page = await mediator.Send(request);
+        var page = await mediator.Send(CreatePageCommand.CreateFrom(request));
         var response = PageResponse.CreateFrom(page);
 
-        return new CreatedResult { Value = response, ContentTypes = { "application/json" } };
+        return new CreatedResult
+        {
+            StatusCode = StatusCodes.Status201Created,
+            Value = response,
+            ContentTypes = { "application/json" }
+        };
     }
 }

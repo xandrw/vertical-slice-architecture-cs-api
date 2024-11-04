@@ -6,11 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Auth.ChangePassword.Command;
 
-public class ChangePasswordCommand(int id, string password) : IRequest
-{
-    public int Id { get; } = id;
-    public string Password { get; } = password;
-}
+public record ChangePasswordCommand(int Id, string Password) : IRequest;
 
 public class ChangePasswordCommandHandler(IDbProxy<User> usersProxy, IPasswordHasher passwordHasher)
     : IRequestHandler<ChangePasswordCommand>

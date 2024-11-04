@@ -6,17 +6,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Auth.Login.Command;
 
+public record LoginCommand(string Email, string Password) : IRequest<LoginResponse>;
+
 public class LoginCommandHandler(
     IDbProxy<User> usersProxy,
     IJwtTokenGenerator jwtTokenGenerator,
     IPasswordHasher passwordHasher
-) : IRequestHandler<LoginRequest, LoginResponse>
+) : IRequestHandler<LoginCommand, LoginResponse>
 {
-    public async Task<LoginResponse> Handle(LoginRequest request, CancellationToken cancellationToken)
+    public async Task<LoginResponse> Handle(LoginCommand command, CancellationToken cancellationToken)
     {
-        var user = await usersProxy.Query().SingleOrDefaultAsync(u => u.Email == request.Email, cancellationToken);
+        var user = await usersProxy.Query().SingleOrDefaultAsync(u => u.Email == command.Email, cancellationToken);
 
-        if (user is null || !user.VerifyPassword(request.Password, passwordHasher.VerifyPassword))
+        if (user is null || !user.VerifyPassword(command.Password, passwordHasher.VerifyPassword))
         {
             throw new UnauthorizedHttpException();
         }

@@ -1,9 +1,8 @@
 using System.ComponentModel.DataAnnotations;
-using MediatR;
 
 namespace Application.Features.Auth.Login;
 
-public class LoginRequest(string email, string password) : IRequest<LoginResponse>
+public class LoginRequest(string email, string password)
 {
     [Required(ErrorMessage = "error.email.required")]
     [EmailAddress(ErrorMessage = "error.email.invalid")]

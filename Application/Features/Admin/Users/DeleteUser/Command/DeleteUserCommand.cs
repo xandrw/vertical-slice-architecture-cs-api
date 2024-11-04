@@ -6,10 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Admin.Users.DeleteUser.Command;
 
-public class DeleteUserCommand(int id) : IRequest
-{
-    public int Id { get; } = id;
-}
+public record DeleteUserCommand(int Id) : IRequest;
 
 public class DeleteUserCommandHandler(IDbProxy<User> usersProxy) : IRequestHandler<DeleteUserCommand>
 {

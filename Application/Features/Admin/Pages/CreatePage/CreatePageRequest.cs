@@ -1,10 +1,8 @@
 using System.ComponentModel.DataAnnotations;
-using Domain.Pages;
-using MediatR;
 
 namespace Application.Features.Admin.Pages.CreatePage;
 
-public class CreatePageRequest(string name, string title, string description) : IRequest<Page>
+public class CreatePageRequest(string name, string title, string description)
 {
     [Required(ErrorMessage = "error.name.required")]
     [MinLength(3, ErrorMessage = "error.name.min_length")]

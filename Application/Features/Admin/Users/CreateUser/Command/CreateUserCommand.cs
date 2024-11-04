@@ -10,14 +10,22 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Admin.Users.CreateUser.Command;
 
+public record CreateUserCommand(string Email, string Role, string Password) : IRequest<User>
+{
+    public static CreateUserCommand CreateFrom(CreateUserRequest request)
+    {
+        return new CreateUserCommand(request.Email, request.Role, request.Password);
+    }
+}
+
 public class CreateUserCommandHandler(
     IDbProxy<User> usersProxy,
     IPasswordHasher passwordHasher,
-    EventPublisher eventPublisher) : IRequestHandler<CreateUserRequest, User>
+    EventPublisher eventPublisher) : IRequestHandler<CreateUserCommand, User>
 {
-    public async Task<User> Handle(CreateUserRequest request, CancellationToken cancellationToken)
+    public async Task<User> Handle(CreateUserCommand command, CancellationToken cancellationToken)
     {
-        var user = User.Create(request.Email, request.Role, request.Password, passwordHasher.HashPassword);
+        var user = User.Create(command.Email, command.Role, command.Password, passwordHasher.HashPassword);
 
         try
         {

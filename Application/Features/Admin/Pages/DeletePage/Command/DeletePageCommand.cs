@@ -6,10 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Admin.Pages.DeletePage.Command;
 
-public class DeletePageCommand(int id) : IRequest
-{
-    public int Id { get; } = id;
-}
+public record DeletePageCommand(int Id) : IRequest;
 
 public class DeletePageCommandHandler(IDbProxy<Page> pagesProxy) : IRequestHandler<DeletePageCommand>
 {

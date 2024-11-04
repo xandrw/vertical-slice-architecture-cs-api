@@ -18,7 +18,10 @@ public class PageResponseExample : IExamplesProvider<PageResponse>
             [
                 new SectionResponse
                 {
-                    Id = 1, Category = "Section Category Name", Name = "Section Name", Value = "Section Name"
+                    Id = 1,
+                    Category = "Section Category Name",
+                    Name = "Section Name",
+                    Value = "Section Name"
                 }
             ]
         };

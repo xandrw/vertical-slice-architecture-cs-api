@@ -9,8 +9,8 @@ public class UpdatePageRequestExample : IExamplesProvider<UpdatePageRequest>
         return new UpdatePageRequest("Page Name", "Page Title", "Page Description")
         {
             Sections = [
-                new UpdatePageRequestSectionItem("Section Category", "Section Name", "Section Value") { Id = 1 },
-                new UpdatePageRequestSectionItem("Section Category", "2nd Section Name", "2nd Section Value")
+                new("Section Category", "Section to be Updated Name", "Section Value") { Id = 1 },
+                new("Section Category", "2nd Section to be Created Name", "2nd Section Value")
             ]
         };
     }

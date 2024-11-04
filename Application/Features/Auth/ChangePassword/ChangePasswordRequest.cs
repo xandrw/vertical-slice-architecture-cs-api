@@ -7,5 +7,5 @@ public class ChangePasswordRequest
     [Required(ErrorMessage = "error.password.required")]
     [MinLength(8, ErrorMessage = "error.password.tooShort")]
     [MaxLength(50, ErrorMessage = "error.password.tooLong")]
-    public required string Password { get; set; }
+    public required string Password { get; init; }
 }

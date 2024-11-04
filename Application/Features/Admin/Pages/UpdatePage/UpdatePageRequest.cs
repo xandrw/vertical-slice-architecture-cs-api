@@ -24,7 +24,7 @@ public class UpdatePageRequest(string name, string title, string description)
 public class UpdatePageRequestSectionItem(string category, string name, string value)
 {
     [Range(1, int.MaxValue, ErrorMessage = "error.id.invalid")]
-    public int Id { get; init; }
+    public int? Id { get; init; }
     
     [Required(ErrorMessage = "error.category.required")]
     [MinLength(3, ErrorMessage = "error.category.min_length")]

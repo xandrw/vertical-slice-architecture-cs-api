@@ -8,20 +8,28 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Admin.Pages.UpdatePage.Command;
 
-public class UpdatePageCommand(
-    int id,
-    string name,
-    string title,
-    string description,
-    IList<UpdatePageRequestSectionItem> sections
+public record UpdatePageCommand(
+    int Id,
+    string Name,
+    string Title,
+    string Description,
+    IList<UpdatePageCommandSectionItem> Sections
 ) : IRequest<Page>
 {
-    public int Id { get; } = id;
-    public string Name { get; } = name;
-    public string Title { get; } = title;
-    public string Description { get; } = description;
-    public IList<UpdatePageRequestSectionItem> Sections { get; } = sections;
+    public static UpdatePageCommand CreateFrom(int id, UpdatePageRequest request)
+    {
+        var sections = new List<UpdatePageCommandSectionItem>();
+
+        foreach (var section in request.Sections)
+        {
+            sections.Add(new UpdatePageCommandSectionItem(section.Id, section.Category, section.Name, section.Value));
+        }
+
+        return new UpdatePageCommand(id, request.Name, request.Title, request.Description, sections);
+    }
 }
+
+public record UpdatePageCommandSectionItem(int? Id, string Category, string Name, string Value);
 
 public class UpdatePageCommandHandler(IDbProxy<Page> pagesProxy) : IRequestHandler<UpdatePageCommand, Page>
 {
@@ -36,13 +44,13 @@ public class UpdatePageCommandHandler(IDbProxy<Page> pagesProxy) : IRequestHandl
         page.Update(command.Name, command.Title, command.Description);
 
         var sectionsToAdd = command.Sections
-            .Where(cs => cs.Id is 0)
+            .Where(cs => cs.Id is null)
             .Select(cs => Section.Create(cs.Category, cs.Name, cs.Value))
             .ToImmutableList();
 
         var sectionsToUpdate = command.Sections
             .Where(cs => page.Sections.Any(ps => ps.Id == cs.Id))
-            .Select(cs => Section.Create(cs.Category, cs.Name, cs.Value, cs.Id))
+            .Select(cs => Section.Create(cs.Category, cs.Name, cs.Value, cs.Id ?? 0))
             .Except(sectionsToAdd)
             .ToImmutableList();
 

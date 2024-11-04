@@ -1,10 +1,8 @@
 using System.ComponentModel.DataAnnotations;
-using Domain.Users;
-using MediatR;
 
-namespace Application.Features.Admin.Users.CreateUser.Command;
+namespace Application.Features.Admin.Users.CreateUser;
 
-public class CreateUserRequest(string email, string role, string password) : IRequest<User>
+public class CreateUserRequest(string email, string role, string password)
 {
     [Required(ErrorMessage = "error.email.required")]
     [EmailAddress(ErrorMessage = "error.email.invalid")]

@@ -32,9 +32,7 @@ public class UpdatePageEndpoint(IMediator mediator) : ControllerBase
     [SwaggerRequestExample(typeof(UpdatePageRequest), typeof(UpdatePageRequestExample))]
     public async Task<ActionResult> Put([FromBody] UpdatePageRequest request, int id)
     {
-        var page = await mediator.Send(
-            new UpdatePageCommand(id, request.Name, request.Title, request.Description, request.Sections)
-        );
+        var page = await mediator.Send(UpdatePageCommand.CreateFrom(id, request));
 
         return new OkObjectResult(PageResponse.CreateFrom(page));
     }

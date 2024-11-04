@@ -32,8 +32,13 @@ public class CreateUserEndpoint(IMediator mediator) : ControllerBase
     [SwaggerRequestExample(typeof(CreateUserRequest), typeof(CreateUserRequestExample))]
     public async Task<IActionResult> Post([FromBody] CreateUserRequest request)
     {
-        var user = await mediator.Send(request);
+        var user = await mediator.Send(CreateUserCommand.CreateFrom(request));
 
-        return new CreatedResult { Value = UserResponse.CreateFrom(user), ContentTypes = { "application/json" } };
+        return new CreatedResult
+        {
+            StatusCode = StatusCodes.Status201Created,
+            Value = UserResponse.CreateFrom(user),
+            ContentTypes = { "application/json" }
+        };
     }
 }

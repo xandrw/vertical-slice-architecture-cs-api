@@ -1,3 +1,4 @@
+using Application.Features.Auth.Login.Command;
 using Application.Features.Auth.Login.Swagger;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -22,7 +23,7 @@ public class LoginEndpoint(IMediator mediator) : ControllerBase
     [SwaggerRequestExample(typeof(LoginRequest), typeof(LoginRequestExample))]
     public async Task<IActionResult> Post([FromBody] LoginRequest request)
     {
-        var response = await mediator.Send(request);
+        var response = await mediator.Send(new LoginCommand(request.Email, request.Password));
 
         return new OkObjectResult(response);
     }
