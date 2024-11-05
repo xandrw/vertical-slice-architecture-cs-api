@@ -25,12 +25,12 @@ public class PageTest
     }
 
     [Test]
-    [TestCase(null, "Title", "Description", "name", TestName = "Null name")]
-    [TestCase("Name", null, "Description", "title", TestName = "Null title")]
-    [TestCase("Name", "Title", null, "description", TestName = "Null description")]
-    [TestCase("", "Title", "Description", "name", TestName = "Empty name")]
-    [TestCase("Name", "", "Description", "title", TestName = "Empty title")]
-    [TestCase("Name", "Title", "", "description", TestName = "Empty description")]
+    [TestCase(null, "Title", "Description", "name", TestName = "Name:null")]
+    [TestCase("", "Title", "Description", "name", TestName = "Name:empty")]
+    [TestCase("Name", null, "Description", "title", TestName = "Title:null")]
+    [TestCase("Name", "", "Description", "title", TestName = "Title:empty")]
+    [TestCase("Name", "Title", null, "description", TestName = "Description:null")]
+    [TestCase("Name", "Title", "", "description", TestName = "Description:empty")]
     public void CreateInvalidPage(string? name, string? title, string? description, string field)
     {
         var exception = Assert.Throws<ArgumentException>(() => Page.Create(name!, title!, description!));
@@ -59,12 +59,12 @@ public class PageTest
     }
 
     [Test]
-    [TestCase(null, "Title", "Description", "name", TestName = "Null name")]
-    [TestCase("Name", null, "Description", "title", TestName = "Null title")]
-    [TestCase("Name", "Title", null, "description", TestName = "Null description")]
-    [TestCase("", "Title", "Description", "name", TestName = "Empty name")]
-    [TestCase("Name", "", "Description", "title", TestName = "Empty title")]
-    [TestCase("Name", "Title", "", "description", TestName = "Empty description")]
+    [TestCase(null, "Title", "Description", "name", TestName = "Name:null")]
+    [TestCase("", "Title", "Description", "name", TestName = "Name:empty")]
+    [TestCase("Name", null, "Description", "title", TestName = "Title:null")]
+    [TestCase("Name", "", "Description", "title", TestName = "Title:empty")]
+    [TestCase("Name", "Title", null, "description", TestName = "Description:null")]
+    [TestCase("Name", "Title", "", "description", TestName = "Description:empty")]
     public void UpdateInvalidPage(string? name, string? title, string? description, string field)
     {
         var page = Page.Create("Initial Name", "Initial Title", "Initial Description");

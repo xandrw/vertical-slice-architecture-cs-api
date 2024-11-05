@@ -1,12 +1,12 @@
+using System.Text.RegularExpressions;
 using Domain.Validation;
 
 namespace Domain.Users;
 
 public class User : BaseDomainEntity
 {
-    /** Auto-Generated and assigned to Property by EF Core, using Reflection */
-    public int Id { get; private set; }
-
+    public const string EmailRegex = @"^[^@\s]+@[^@\s]+\.[^@\s]{2,3}$";
+    
     public string Email { get; private set; } = string.Empty;
     public string Role { get; private set; } = string.Empty;
     public byte[] PasswordHash { get; private set; } = [];
@@ -14,7 +14,8 @@ public class User : BaseDomainEntity
 
     public static User Create(string email, string role, string password, Func<string, (byte[], byte[])> passwordHasher)
     {
-        Contract.Requires(string.IsNullOrWhiteSpace(email) == false);
+        Contract.Requires(!string.IsNullOrWhiteSpace(email));
+        Contract.Requires(Regex.IsMatch(email, EmailRegex), "error.email.invalid");
         Contract.Requires(email.Length is >= 6 and <= 60);
         Contract.Requires(Users.Role.Roles.Contains(role));
 
@@ -25,7 +26,8 @@ public class User : BaseDomainEntity
     {
         if (email == Email) return this;
 
-        Contract.Requires(string.IsNullOrWhiteSpace(email) == false);
+        Contract.Requires(!string.IsNullOrWhiteSpace(email));
+        Contract.Requires(Regex.IsMatch(email, EmailRegex), "error.email.invalid");
         Contract.Requires(email.Length is >= 6 and <= 60);
 
         Email = email;

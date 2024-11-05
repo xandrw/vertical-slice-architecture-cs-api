@@ -5,8 +5,6 @@ namespace Domain.Pages;
 
 public class Page : BaseDomainEntity
 {
-    public int Id { get; private set; }
-
     public string Name { get; private set; } = string.Empty;
     public string Title { get; private set; } = string.Empty;
     public string Description { get; private set; } = string.Empty;

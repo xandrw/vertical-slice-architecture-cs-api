@@ -4,8 +4,6 @@ namespace Domain.Pages;
 
 public class Section : BaseDomainEntity
 {
-    public int Id { get; private set; }
-
     public string Category { get; private set; } = string.Empty;
     public string Name { get; private set; } = string.Empty;
     public string Value { get; private set; } = string.Empty;
