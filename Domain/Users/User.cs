@@ -5,7 +5,7 @@ namespace Domain.Users;
 
 public class User : BaseDomainEntity
 {
-    public const string EmailRegex = @"^[^@\s]+@[^@\s]+\.[^@\s]{2,3}$";
+    private const string EmailRegex = @"^[^@\s]+@[^@\s]+\.[^@\s]{2,3}$";
     
     public string Email { get; private set; } = string.Empty;
     public string Role { get; private set; } = string.Empty;
@@ -49,16 +49,13 @@ public class User : BaseDomainEntity
         Contract.Requires(string.IsNullOrWhiteSpace(password) == false);
         Contract.Requires(password.Length is >= 8 and <= 60);
 
-        var (hash, salt) = passwordHasher(password);
-        PasswordHash = hash;
-        PasswordSalt = salt;
+        (PasswordHash, PasswordSalt) = passwordHasher(password);
         return this;
     }
 
     public bool VerifyPassword(string password, Func<string, byte[], byte[]> passwordVerifier)
     {
-        var computedHash = passwordVerifier(password, PasswordSalt);
-        return computedHash.SequenceEqual(PasswordHash);
+        return passwordVerifier(password, PasswordSalt).SequenceEqual(PasswordHash);
     }
 }
 

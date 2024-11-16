@@ -1,4 +1,3 @@
-using Domain.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +9,7 @@ namespace Application.Features.GetCurrentDateTime;
 [ApiController]
 [Route("api/current-date-time")]
 [Produces("text/plain")]
-[Authorize(Roles = $"{Role.Admin},{Role.Author}")]
+[AllowAnonymous]
 public class GetCurrentDateTimeEndpoint(IPostmanEchoTimeClient postmanEchoTimeClient) : ControllerBase
 {
     [HttpGet(Name = "getCurrentDateTime")]

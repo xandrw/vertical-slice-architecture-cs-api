@@ -6,7 +6,7 @@ public class BaseDomainEntity : IEntity
 {
     protected BaseDomainEntity() {}
 
-    /** Auto-Generated and assigned to Property by EF Core, using Reflection */
+    /** Auto-Generated and assigned by EF Core, using Reflection */
     public int Id { get; protected set; }
 
     public static async Task PublishEvent(IDomainEvent domainEvent, Func<object, Task> eventPublisher)

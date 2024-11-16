@@ -6,58 +6,66 @@ using WebApi.Config.Swagger;
 using WebApi.Filters;
 using WebApi.Middleware;
 
-var builder = WebApplication.CreateBuilder(args);
+namespace WebApi;
 
-builder.Configuration.ConfigureEnvVariables();
-
-builder.Services.AddInfrastructure(builder.Configuration);
-builder.Services.AddApplication();
-
-builder.Services.AddCors(options =>
+public class Program
 {
-    options.AddPolicy(
-        "AllowLocalhost",
-        b => b.WithOrigins("http://localhost:3000")
-            .AllowAnyHeader()
-            .AllowAnyMethod()
-            .AllowCredentials()
-    );
-});
+    public static async Task Main(string[] args)
+    {
+        var builder = WebApplication.CreateBuilder(args);
 
-builder.Services
-    .AddControllers(options => options.Filters.Add<ValidateModelFilter>())
-    .ConfigureApiBehaviorOptions(options => options.SuppressModelStateInvalidFilter = true);
-builder.Services.AddHttpContextAccessor();
-builder.Services.ConfigureAuth(builder.Configuration);
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.ConfigureSwagger();
+        builder.Configuration.ConfigureEnvVariables();
 
-var app = builder.Build();
+        builder.Services.AddInfrastructure(builder.Configuration);
+        builder.Services.AddApplication();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwaggerDocumentation();
-    await app.Services.EnsureDatabaseMigratedAsync();
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy(
+                "AllowLocalhost",
+                b => b.WithOrigins("http://localhost:3000")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials()
+            );
+        });
+
+        builder.Services
+            .AddControllers(options => options.Filters.Add<ValidateModelFilter>())
+            .ConfigureApiBehaviorOptions(options => options.SuppressModelStateInvalidFilter = true);
+        builder.Services.AddHttpContextAccessor();
+        builder.Services.ConfigureAuth(builder.Configuration);
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.ConfigureSwagger();
+
+        var app = builder.Build();
+
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseSwaggerDocumentation();
+            await app.Services.EnsureDatabaseMigratedAsync();
+        }
+
+        var fileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "www"));
+
+        app.UseStaticFiles(new StaticFileOptions
+        {
+            FileProvider = fileProvider,
+            RequestPath = ""
+        });
+
+        // Configure the HTTP request pipeline.
+        app.UseCors("AllowLocalhost");
+        app.UseMiddleware<ExceptionHandlingMiddleware>();
+        // app.UseHttpsRedirection();
+        app.UseAuthorization();
+        app.MapControllers();
+
+        app.MapFallbackToFile("index.html", new StaticFileOptions
+        {
+            FileProvider = fileProvider
+        });
+
+        await app.RunAsync();
+    }
 }
-
-var fileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "www"));
-
-app.UseStaticFiles(new StaticFileOptions
-{
-    FileProvider = fileProvider,
-    RequestPath = ""
-});
-
-// Configure the HTTP request pipeline.
-app.UseCors("AllowLocalhost");
-app.UseMiddleware<ExceptionHandlingMiddleware>();
-// app.UseHttpsRedirection();
-app.UseAuthorization();
-app.MapControllers();
-
-app.MapFallbackToFile("index.html", new StaticFileOptions
-{
-    FileProvider = fileProvider
-});
-
-app.Run();
