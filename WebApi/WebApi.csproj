@@ -18,12 +18,12 @@
       <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
     </ItemGroup>
 
-<!--    <Target Name="PostBuild" AfterTargets="PostBuildEvent">-->
-<!--        <Exec Command="cp -Rf $(SolutionDir)SolidClient/dist/* $(ProjectDir)www/" />-->
-<!--    </Target>-->
-
     <ItemGroup>
       <Folder Include="www\" />
     </ItemGroup>
+
+<!--    <Target Name="PostBuild" AfterTargets="PostBuildEvent">-->
+<!--        <Exec Command="cp -Rf $(SolutionDir)SolidClient/dist/* $(ProjectDir)www/" />-->
+<!--    </Target>-->
 
 </Project>
