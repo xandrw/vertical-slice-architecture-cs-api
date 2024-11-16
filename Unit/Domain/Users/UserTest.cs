@@ -80,7 +80,6 @@ public class UserTest
 
     private static byte[] PasswordVerifier(string password, byte[] passwordSalt)
     {
-        byte[] expectedSalt = "test-salt"u8.ToArray();
         return Encoding.UTF8.GetBytes($"hashed:{password}");
     }
 }

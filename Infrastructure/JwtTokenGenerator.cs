@@ -19,8 +19,8 @@ public class JwtTokenGenerator(IConfiguration config) : IJwtTokenGenerator
         var token = tokenHandler.CreateToken(GetTokenDescriptor(user, key));
         return tokenHandler.WriteToken(token);
     }
-    
-    protected SecurityTokenDescriptor GetTokenDescriptor(User user, byte[] key)
+
+    private static SecurityTokenDescriptor GetTokenDescriptor(User user, byte[] key)
     {
         return new SecurityTokenDescriptor
         {

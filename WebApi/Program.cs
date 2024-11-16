@@ -1,6 +1,6 @@
 using Application;
 using Infrastructure;
-using Microsoft.Extensions.FileProviders;
+using Serilog;
 using WebApi.Config;
 using WebApi.Config.Swagger;
 using WebApi.Filters;
@@ -12,60 +12,67 @@ public class Program
 {
     public static async Task Main(string[] args)
     {
-        var builder = WebApplication.CreateBuilder(args);
+        Log.Logger = new LoggerConfiguration()
+            .WriteTo.Console()
+            .WriteTo.File("Logs/log-.txt", rollingInterval: RollingInterval.Day)
+            .CreateLogger();
 
-        builder.Configuration.ConfigureEnvVariables();
-
-        builder.Services.AddInfrastructure(builder.Configuration);
-        builder.Services.AddApplication();
-
-        builder.Services.AddCors(options =>
+        try
         {
-            options.AddPolicy(
-                "AllowLocalhost",
-                b => b.WithOrigins("http://localhost:3000")
-                    .AllowAnyHeader()
-                    .AllowAnyMethod()
-                    .AllowCredentials()
-            );
-        });
+            Log.Information("Starting application");
+            var builder = WebApplication.CreateBuilder(args);
 
-        builder.Services
-            .AddControllers(options => options.Filters.Add<ValidateModelFilter>())
-            .ConfigureApiBehaviorOptions(options => options.SuppressModelStateInvalidFilter = true);
-        builder.Services.AddHttpContextAccessor();
-        builder.Services.ConfigureAuth(builder.Configuration);
-        builder.Services.AddEndpointsApiExplorer();
-        builder.Services.ConfigureSwagger();
+            builder.Configuration.ConfigureEnvVariables();
 
-        var app = builder.Build();
+            builder.Services.AddInfrastructure(builder.Configuration);
+            builder.Services.AddApplication();
 
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseSwaggerDocumentation();
-            await app.Services.EnsureDatabaseMigratedAsync();
+            builder.WebHost.UseUrls("http://localhost:5255");
+
+            builder.Services
+                .AddControllers(options => options.Filters.Add<ValidateModelFilter>())
+                .ConfigureApiBehaviorOptions(options => options.SuppressModelStateInvalidFilter = true);
+            builder.Services.AddHttpContextAccessor();
+            builder.Services.ConfigureAuth(builder.Configuration);
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.ConfigureSwagger();
+
+            var app = builder.Build();
+
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwaggerDocumentation();
+                app.UseDeveloperExceptionPage();
+                await app.Services.EnsureDatabaseMigratedAsync();
+            }
+
+            app.Use(async (_, next) =>
+            {
+                try
+                {
+                    await next();
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex, "Unhandled exception");
+                    throw;
+                }
+            });
+
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
+            // app.UseHttpsRedirection();
+            app.UseAuthorization();
+            app.MapControllers();
+
+            await app.RunAsync();
         }
-
-        var fileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "www"));
-
-        app.UseStaticFiles(new StaticFileOptions
+        catch (Exception ex)
         {
-            FileProvider = fileProvider,
-            RequestPath = ""
-        });
-
-        // Configure the HTTP request pipeline.
-        app.UseCors("AllowLocalhost");
-        app.UseMiddleware<ExceptionHandlingMiddleware>();
-        // app.UseHttpsRedirection();
-        app.UseAuthorization();
-        app.MapControllers();
-
-        app.MapFallbackToFile("index.html", new StaticFileOptions
+            Log.Fatal(ex, "Application terminated unexpectedly");
+        }
+        finally
         {
-            FileProvider = fileProvider
-        });
-
-        await app.RunAsync();
+            await Log.CloseAndFlushAsync();
+        }
     }
 }

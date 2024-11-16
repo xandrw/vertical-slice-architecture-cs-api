@@ -16,21 +16,21 @@ public class ExceptionHandlingMiddleware(RequestDelegate next, ILogger<Exception
         catch (UnprocessableHttpException e)
         {
             logger.LogError(e, "{Message}", e.Message);
-            await HandleUnprocessableHttpException(context, e);
+            await HandleUnprocessableHttpExceptionAsync(context, e);
         }
         catch (HttpException e)
         {
             logger.LogError(e, "{Message}", e.Message);
-            await HandleHttpException(context, e);
+            await HandleHttpExceptionAsync(context, e);
         }
         catch (Exception e)
         {
             logger.LogError(e, "An unhandled exception occurred.");
-            await HandleGlobalExceptionAsync(context);
+            await HandleExceptionAsync(context);
         }
     }
     
-    private async Task HandleUnprocessableHttpException(HttpContext context, UnprocessableHttpException e)
+    private async Task HandleUnprocessableHttpExceptionAsync(HttpContext context, UnprocessableHttpException e)
     {
         context.Response.StatusCode = e.StatusCode;
         context.Response.ContentType = "application/json";
@@ -51,7 +51,7 @@ public class ExceptionHandlingMiddleware(RequestDelegate next, ILogger<Exception
         await context.Response.WriteAsync(result);
     }
     
-    private async Task HandleHttpException(HttpContext context, HttpException e)
+    private async Task HandleHttpExceptionAsync(HttpContext context, HttpException e)
     {
         context.Response.StatusCode = e.StatusCode;
         context.Response.ContentType = "application/json";
@@ -60,7 +60,7 @@ public class ExceptionHandlingMiddleware(RequestDelegate next, ILogger<Exception
         await context.Response.WriteAsync(result);
     }
     
-    private async Task HandleGlobalExceptionAsync(HttpContext context)
+    private async Task HandleExceptionAsync(HttpContext context)
     {
         context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
         context.Response.ContentType = "application/json";

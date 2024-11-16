@@ -21,7 +21,8 @@ public record CreateUserCommand(string Email, string Role, string Password) : IR
 public class CreateUserCommandHandler(
     IRepository<User> usersRepository,
     IPasswordHasher passwordHasher,
-    EventPublisher eventPublisher) : IRequestHandler<CreateUserCommand, User>
+    EventPublisher eventPublisher
+) : IRequestHandler<CreateUserCommand, User>
 {
     public async Task<User> Handle(CreateUserCommand command, CancellationToken cancellationToken)
     {
