@@ -15,11 +15,11 @@ public static class BogusGenerator
         {
             string placeholderMatch = match.Groups[1].Value;
             string lengthMatch = match.Groups[2].Value;
-            int length = !string.IsNullOrEmpty(lengthMatch) ? int.Parse(lengthMatch) : 10;
+            int length = !string.IsNullOrEmpty(lengthMatch) ? int.Parse(lengthMatch) : 0;
 
             return placeholderMatch switch
             {
-                "long_text" => _faker.Random.AlphaNumeric(length),
+                "long_text" => _faker.Random.AlphaNumeric(length > 0 ? length : 100),
                 _ => match.Value
             };
         });
