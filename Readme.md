@@ -37,3 +37,19 @@ dotnet ef migrations add [CustomName] --project Infrastructure
 ```bash
 dotnet ef database update --project Infrastructure
 ```
+
+## Tests
+### Unit Tests
+```bash
+dotnet test ./Unit/Unit.csproj
+```
+
+### SpecFlow Tests
+```bash
+cd ./Spec && dotnet test
+```
+
+### SpecFlow on Windows
+```bash
+cd .\Spec\; dotnet test
+```
