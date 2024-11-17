@@ -9,7 +9,6 @@ public sealed class DatabaseSeedHook
 {
     private const string DatabasePath = "../../../../Infrastructure/Database/app.db";
     private static SqliteConnection? _connection;
-    private static ILogger _logger = LoggerHooks.GetLogger();
 
     [BeforeFeature]
     public static void SeedDatabase(FeatureContext featureContext)
@@ -18,11 +17,11 @@ public sealed class DatabaseSeedHook
 
         if (_connection.State != System.Data.ConnectionState.Open) _connection.Open();
         
-        _logger.Information("[SpecFlow.DatabaseSeedHook]: Connected to database");
+        Log.Information("[SpecFlow.DatabaseSeedHook]: Connected to database");
 
         if (featureContext.FeatureInfo.Tags.Contains("SeedUsers"))
         {
-            UsersSeeder.Seed(_connection, _logger);
+            UsersSeeder.Seed(_connection, Log.Logger);
         }
     }
 
@@ -33,7 +32,7 @@ public sealed class DatabaseSeedHook
         
         if (featureContext.FeatureInfo.Tags.Contains("SeedUsers"))
         {
-            UsersSeeder.Cleanup(_connection, _logger);
+            UsersSeeder.Cleanup(_connection, Log.Logger);
         }
 
         if (_connection.State != System.Data.ConnectionState.Open) return;
