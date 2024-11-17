@@ -49,7 +49,7 @@ public static class UsersSeeder
             WHERE name = 'Users';
         ";
         resetSequenceCommand.ExecuteNonQuery();
-        
+
         logger.Information("[SpecFlow.UsersSeeder]: Cleaned up.");
     }
 }

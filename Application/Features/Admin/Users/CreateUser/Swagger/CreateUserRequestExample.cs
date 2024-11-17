@@ -6,6 +6,6 @@ public class CreateUserRequestExample : IExamplesProvider<CreateUserRequest>
 {
     public CreateUserRequest GetExamples()
     {
-        return new CreateUserRequest("email@example.com", "Author|Admin", "password");
+        return new CreateUserRequest("example@email.com", "Author|Admin", "password");
     }
 }

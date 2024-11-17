@@ -61,12 +61,12 @@ public class UserTest
 
         Assert.That(user.Role, Is.EqualTo(Role.Author));
     }
-    
+
     [Test]
     public void VerifyPassword()
     {
         var user = User.Create("initial@email.com", Role.Admin, "password", PasswordHasher);
-        
+
         Assert.That(user.VerifyPassword("password", PasswordVerifier), Is.True);
     }
 

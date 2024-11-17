@@ -9,7 +9,7 @@ class UserResponseExample : IExamplesProvider<UserResponse>
         return new UserResponse
         {
             Id = 1,
-            Email = "email@example.com",
+            Email = "example@email.com",
             Role = "Author|Admin"
         };
     }

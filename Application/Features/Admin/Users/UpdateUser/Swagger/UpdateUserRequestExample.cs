@@ -8,7 +8,7 @@ public class UpdateUserRequestExample : IExamplesProvider<UpdateUserRequest>
     {
         return new UpdateUserRequest
         {
-            Email = "email@example.com",
+            Email = "example@email.com",
             Role = "Author|Admin"
         };
     }
