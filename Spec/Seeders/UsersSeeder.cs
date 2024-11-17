@@ -1,18 +1,19 @@
 ﻿using Domain.Users;
 using Infrastructure.Services;
 using Microsoft.Data.Sqlite;
+using Serilog;
 
 namespace Spec.Seeders;
 
 public static class UsersSeeder
 {
-    public static void Seed(SqliteConnection connection)
+    public static void Seed(SqliteConnection connection, ILogger logger)
     {
         var passwordHasher = new HmacSha512PasswordHasher();
 
         User[] users =
         [
-            User.Create("test.admin@example.com", "Admin", "password", passwordHasher.HashPassword),
+            User.Create("test.admin@email.com", "Admin", "password", passwordHasher.HashPassword),
             User.Create("test.author@example.com", "Author", "password", passwordHasher.HashPassword)
         ];
 
@@ -31,10 +32,11 @@ public static class UsersSeeder
             insertCommand.Parameters.AddWithValue("@PasswordHash", user.PasswordHash);
             insertCommand.Parameters.AddWithValue("@PasswordSalt", user.PasswordSalt);
             insertCommand.ExecuteNonQuery();
+            logger.Information($"[SpecFlow.UsersSeeder]: User {user.Email} with {user.Role} role seeded.");
         }
     }
 
-    public static void Cleanup(SqliteConnection connection)
+    public static void Cleanup(SqliteConnection connection, ILogger logger)
     {
         var cleanupCommand = connection.CreateCommand();
         cleanupCommand.CommandText = "DELETE FROM Users WHERE Email LIKE 'test.%';";
@@ -47,5 +49,7 @@ public static class UsersSeeder
             WHERE name = 'Users';
         ";
         resetSequenceCommand.ExecuteNonQuery();
+        
+        logger.Information("[SpecFlow.UsersSeeder]: Cleaned up.");
     }
 }

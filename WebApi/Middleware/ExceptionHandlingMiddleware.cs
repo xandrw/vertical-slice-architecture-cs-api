@@ -15,7 +15,8 @@ public class ExceptionHandlingMiddleware(RequestDelegate next, ILogger<Exception
         }
         catch (UnprocessableHttpException e)
         {
-            logger.LogError(e, "{Message}", e.Message);
+            LogValidationErrors(e);
+            
             await HandleUnprocessableHttpExceptionAsync(context, e);
         }
         catch (HttpException e)
@@ -29,29 +30,46 @@ public class ExceptionHandlingMiddleware(RequestDelegate next, ILogger<Exception
             await HandleExceptionAsync(context);
         }
     }
-    
-    private async Task HandleUnprocessableHttpExceptionAsync(HttpContext context, UnprocessableHttpException e)
+
+    private static async Task HandleUnprocessableHttpExceptionAsync(HttpContext context, UnprocessableHttpException e)
     {
         context.Response.StatusCode = e.StatusCode;
         context.Response.ContentType = "application/json";
-        
-        var options = new JsonSerializerOptions
-        {
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            WriteIndented = true
-        };
-        
-        var result = JsonSerializer.Serialize(new UnprocessableEntityResponse
-        {
-            Error = e.Message,
-            Status = e.StatusCode,
-            Errors = e.Errors
-        }, options);
+
+        var result = JsonSerializer.Serialize(
+            new UnprocessableEntityResponse
+            {
+                Error = e.Message,
+                Status = e.StatusCode,
+                Errors = e.Errors
+            },
+            new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                WriteIndented = true,
+                AllowTrailingCommas = true
+            }
+        );
 
         await context.Response.WriteAsync(result);
     }
-    
-    private async Task HandleHttpExceptionAsync(HttpContext context, HttpException e)
+
+    private void LogValidationErrors(UnprocessableHttpException e)
+    {
+        logger.LogError(e, "{Message}", e.Message);
+        
+        foreach ((string fieldName, string[]? validationErrors) in e.Errors)
+        {
+            if (validationErrors is null || validationErrors.Length <= 0) continue;
+            
+            foreach (var validationError in validationErrors)
+            {
+                logger.LogError($"{fieldName}: {validationError}");
+            }
+        }
+    }
+
+    private static async Task HandleHttpExceptionAsync(HttpContext context, HttpException e)
     {
         context.Response.StatusCode = e.StatusCode;
         context.Response.ContentType = "application/json";
@@ -59,8 +77,8 @@ public class ExceptionHandlingMiddleware(RequestDelegate next, ILogger<Exception
 
         await context.Response.WriteAsync(result);
     }
-    
-    private async Task HandleExceptionAsync(HttpContext context)
+
+    private static async Task HandleExceptionAsync(HttpContext context)
     {
         context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
         context.Response.ContentType = "application/json";

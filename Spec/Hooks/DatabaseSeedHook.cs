@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.Sqlite;
+using Serilog;
 using Spec.Seeders;
 
 namespace Spec.Hooks;
@@ -8,6 +9,7 @@ public sealed class DatabaseSeedHook
 {
     private const string DatabasePath = "../../../../Infrastructure/Database/app.db";
     private static SqliteConnection? _connection;
+    private static ILogger _logger = LoggerHooks.GetLogger();
 
     [BeforeFeature]
     public static void SeedDatabase(FeatureContext featureContext)
@@ -15,10 +17,12 @@ public sealed class DatabaseSeedHook
         _connection ??= new SqliteConnection($"Data Source={DatabasePath}");
 
         if (_connection.State != System.Data.ConnectionState.Open) _connection.Open();
+        
+        _logger.Information("[SpecFlow.DatabaseSeedHook]: Connected to database");
 
         if (featureContext.FeatureInfo.Tags.Contains("SeedUsers"))
         {
-            UsersSeeder.Seed(_connection);
+            UsersSeeder.Seed(_connection, _logger);
         }
     }
 
@@ -29,7 +33,7 @@ public sealed class DatabaseSeedHook
         
         if (featureContext.FeatureInfo.Tags.Contains("SeedUsers"))
         {
-            UsersSeeder.Cleanup(_connection);
+            UsersSeeder.Cleanup(_connection, _logger);
         }
 
         if (_connection.State != System.Data.ConnectionState.Open) return;

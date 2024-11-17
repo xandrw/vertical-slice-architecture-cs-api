@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Spec.Features.Admin.Users
+namespace Spec.Features.Auth
 {
     using TechTalk.SpecFlow;
     using System;
@@ -20,9 +20,9 @@ namespace Spec.Features.Admin.Users
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.9.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
-    [NUnit.Framework.DescriptionAttribute("Get User")]
+    [NUnit.Framework.DescriptionAttribute("Login")]
     [NUnit.Framework.CategoryAttribute("SeedUsers")]
-    public partial class GetUserFeature
+    public partial class LoginFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
@@ -30,14 +30,14 @@ namespace Spec.Features.Admin.Users
         private static string[] featureTags = new string[] {
                 "SeedUsers"};
         
-#line 1 "GetUser.feature"
+#line 1 "Login.feature"
 #line hidden
         
         [NUnit.Framework.OneTimeSetUpAttribute()]
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features/Admin/Users", "Get User", null, ProgrammingLanguage.CSharp, featureTags);
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features/Auth", "Login", null, ProgrammingLanguage.CSharp, featureTags);
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -76,14 +76,14 @@ namespace Spec.Features.Admin.Users
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("I cannot access the GetUser endpoint anonymously")]
-        [NUnit.Framework.CategoryAttribute("GetUserUnauthorized")]
-        public void ICannotAccessTheGetUserEndpointAnonymously()
+        [NUnit.Framework.DescriptionAttribute("Login - Unauthorized")]
+        [NUnit.Framework.CategoryAttribute("LoginUnauthorized")]
+        public void Login_Unauthorized()
         {
             string[] tagsOfScenario = new string[] {
-                    "GetUserUnauthorized"};
+                    "LoginUnauthorized"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I cannot access the GetUser endpoint anonymously", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Login - Unauthorized", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 5
     this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -95,9 +95,9 @@ namespace Spec.Features.Admin.Users
             {
                 this.ScenarioStart();
 #line 6
-        testRunner.When("I make a GET request to /api/admin/users/1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+        testRunner.When("I make a POST request to /api/login with the payload:", "{\r\n    \"email\": \"invalid@email.com\",\r\n    \"password\": \"password\"\r\n}", ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 7
+#line 13
         testRunner.Then("the response status code should be 401", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -105,46 +105,29 @@ namespace Spec.Features.Admin.Users
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("I cannot access the GetUser endpoint as an Author")]
-        [NUnit.Framework.CategoryAttribute("GetUserForbidden")]
-        public void ICannotAccessTheGetUserEndpointAsAnAuthor()
+        [NUnit.Framework.DescriptionAttribute("Login - Invalid")]
+        [NUnit.Framework.CategoryAttribute("LoginUnprocessableEntity")]
+        [NUnit.Framework.TestCaseAttribute("null", "\"password\"", "{\"email\": [\"error.email.required\"]}", null)]
+        [NUnit.Framework.TestCaseAttribute("\"\"", "\"password\"", "{\"email\": [\"error.email.required\"]}", null)]
+        [NUnit.Framework.TestCaseAttribute("\"invalid-email\"", "\"password\"", "{\"email\": [\"error.email.invalid\"]}", null)]
+        [NUnit.Framework.TestCaseAttribute("\"valid@email.com\"", "null", "{\"password\": [\"error.password.required\"]}", null)]
+        [NUnit.Framework.TestCaseAttribute("\"valid@email.com\"", "\"\"", "{\"password\": [\"error.password.required\"]}", null)]
+        [NUnit.Framework.TestCaseAttribute("\"valid@email.com\"", "\"short\"", "{\"password\": [\"error.password.tooShort\"]}", null)]
+        [NUnit.Framework.TestCaseAttribute("\"valid@email.com\"", "\"longlonglonglonglonglonglonglonglonglonglonglonglonglonglonglong\"", "{\"password\": [\"error.password.tooLong\"]}", null)]
+        public void Login_Invalid(string email, string password, string validationErrors, string[] exampleTags)
         {
-            string[] tagsOfScenario = new string[] {
-                    "GetUserForbidden"};
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I cannot access the GetUser endpoint as an Author", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 10
-    this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            string[] @__tags = new string[] {
+                    "LoginUnprocessableEntity"};
+            if ((exampleTags != null))
             {
-                testRunner.SkipScenario();
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
-            else
-            {
-                this.ScenarioStart();
-#line 11
-        testRunner.Given("I authenticate with \"test.author@example.com\" and \"password\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 12
-        testRunner.When("I make a GET request to /api/admin/users/1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 13
-        testRunner.Then("the response status code should be 403", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("I access the GetUser endpoint as an Admin and request a user that doesn\'t exist")]
-        [NUnit.Framework.CategoryAttribute("GetUserNotFound")]
-        public void IAccessTheGetUserEndpointAsAnAdminAndRequestAUserThatDoesntExist()
-        {
-            string[] tagsOfScenario = new string[] {
-                    "GetUserNotFound"};
+            string[] tagsOfScenario = @__tags;
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I access the GetUser endpoint as an Admin and request a user that doesn\'t exist", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            argumentsOfScenario.Add("Email", email);
+            argumentsOfScenario.Add("Password", password);
+            argumentsOfScenario.Add("ValidationErrors", validationErrors);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Login - Invalid", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 16
     this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -156,28 +139,28 @@ namespace Spec.Features.Admin.Users
             {
                 this.ScenarioStart();
 #line 17
-        testRunner.Given("I authenticate with \"test.admin@email.com\" and \"password\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+        testRunner.When("I make a POST request to /api/login with the payload:", string.Format("{{\r\n    \"email\": {0},\r\n    \"password\": {1}\r\n}}", email, password), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 18
-        testRunner.When("I make a GET request to /api/admin/users/99999", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 24
+        testRunner.Then("the response status code should be 422", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 19
-        testRunner.Then("the response status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 25
+        testRunner.And("the response should contain", string.Format("{{\r\n    \"errors\" : {0}\r\n}}", validationErrors), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("I access the GetUser endpoint as an Admin")]
-        [NUnit.Framework.CategoryAttribute("GetUserOk")]
-        public void IAccessTheGetUserEndpointAsAnAdmin()
+        [NUnit.Framework.DescriptionAttribute("Login - Ok")]
+        [NUnit.Framework.CategoryAttribute("LoginOk")]
+        public void Login_Ok()
         {
             string[] tagsOfScenario = new string[] {
-                    "GetUserOk"};
+                    "LoginOk"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I access the GetUser endpoint as an Admin", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 22
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Login - Ok", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 42
     this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -187,17 +170,15 @@ namespace Spec.Features.Admin.Users
             else
             {
                 this.ScenarioStart();
-#line 23
-        testRunner.Given("I authenticate with \"test.admin@email.com\" and \"password\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 43
+        testRunner.When("I make a POST request to /api/login with the payload:", "{\r\n    \"email\": \"test.admin@email.com\",\r\n    \"password\": \"password\"\r\n}", ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 24
-        testRunner.When("I make a GET request to /api/admin/users/13786", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 25
+#line 50
         testRunner.Then("the response status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 26
-        testRunner.And("the response should contain", "{\r\n    \"email\": \"test.admin@email.com\",\r\n    \"role\": \"Admin\"\r\n}", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 51
+        testRunner.And("the response should contain", "{\r\n    \"user\": {\r\n        \"id\": 13786,\r\n        \"email\": \"test.admin@email.com\",\r" +
+                        "\n        \"role\": \"Admin\"\r\n    }\r\n}", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

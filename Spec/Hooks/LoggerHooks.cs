@@ -1,25 +1,35 @@
 ﻿using Serilog;
+using Serilog.Core;
 
 namespace Spec.Hooks;
 
-// [Binding]
+[Binding]
 public class LoggerHooks
 {
+    private static Logger? _logger;
+    
     [BeforeTestRun]
     public static void SetupLogging()
     {
-        Log.Logger = new LoggerConfiguration()
+        _logger = new LoggerConfiguration()
             .WriteTo.Console()
-            .WriteTo.File("../../../../WebApi/Logs/test-log-.txt", rollingInterval: RollingInterval.Day)
+            .WriteTo.File("../../../../WebApi/Logs/test-log-.txt", rollingInterval: RollingInterval.Hour)
             .CreateLogger();
         
-        Log.Information("SpecFlow test run started");
+        _logger.Information("[SpecFlow.LoggerHooks]: SpecFlow test run started");
     }
 
     [AfterTestRun]
     public static void TearDownLogging()
     {
-        Log.Information("SpecFlow test run finished");
-        Log.CloseAndFlush();
+        if (_logger is null)
+        {
+            throw new InvalidOperationException("Logger not initialized.");
+        }
+        
+        _logger.Information("[SpecFlow.LoggerHooks]: SpecFlow test run finished");
+        _logger.Dispose();
     }
+    
+    public static ILogger GetLogger() => _logger ?? throw new InvalidOperationException("Logger not initialized.");
 }

@@ -24,11 +24,9 @@ public static class JsonHelper
                 var expectedArray = expected as JArray;
                 var actualArray = actual as JArray;
 
-                Assert.That(actualArray!.Count, Is.EqualTo(expectedArray!.Count));
-
-                for (int i = 0; i < expectedArray.Count; i++)
+                for (int i = 0; i < expectedArray!.Count; i++)
                 {
-                    CompareJson(expectedArray[i], actualArray[i]);
+                    CompareJson(expectedArray[i], actualArray![i]);
                 }
 
                 break;

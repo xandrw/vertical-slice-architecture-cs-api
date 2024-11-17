@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Text;
 using Application.Features.Auth.Login;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
@@ -35,6 +36,12 @@ public sealed class HttpStepDefinitions
     public async Task WhenIMakeAGetRequestTo(string endpoint)
     {
         _response = await _client.GetAsync(endpoint);
+    }
+    
+    [When("I make a POST request to (.*) with the payload:")]
+    public async Task WhenIMakeAPostRequestTo(string endpoint, string payload)
+    {
+        _response = await _client.PostAsync(endpoint, new StringContent(payload, Encoding.UTF8, "application/json"));
     }
 
     [Then("the response status code should be (.*)")]

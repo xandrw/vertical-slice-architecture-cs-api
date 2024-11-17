@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Serilog;
 
 namespace Spec.Hooks;
 
@@ -6,8 +7,13 @@ namespace Spec.Hooks;
 public class StartWebApiHook
 {
     private static Process? _webApiProcess;
+
     private static readonly string WebApiProjectPath =
         Path.Combine(Directory.GetCurrentDirectory(), "../../../../WebApi");
+
+    private static readonly ILogger Logger = LoggerHooks.GetLogger();
+
+    private const int MillisecondsTimeout = 10_000;
 
     [BeforeTestRun]
     public static void StartWebApi()
@@ -17,52 +23,66 @@ public class StartWebApiHook
             throw new DirectoryNotFoundException($"WebApi project path not found: {WebApiProjectPath}");
         }
 
-        var startInfo = new ProcessStartInfo
+        try
         {
-            FileName = "dotnet",
-            Arguments = "run",
-            WorkingDirectory = WebApiProjectPath,
-            RedirectStandardOutput = true,
-            RedirectStandardError = true,
-            UseShellExecute = false,
-            CreateNoWindow = true
-        };
-
-        _webApiProcess = new Process { StartInfo = startInfo };
-
-        _webApiProcess.OutputDataReceived += (_, args) =>
-        {
-            if (!string.IsNullOrWhiteSpace(args.Data))
+            _webApiProcess = new Process
             {
-                Console.WriteLine($"[WebAPI]: {args.Data}");
-            }
-        };
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = "dotnet",
+                    Arguments = "run",
+                    WorkingDirectory = WebApiProjectPath,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true
+                }
+            };
 
-        _webApiProcess.ErrorDataReceived += (_, args) =>
-        {
-            if (!string.IsNullOrWhiteSpace(args.Data))
+            _webApiProcess.OutputDataReceived += (_, args) =>
             {
-                Console.Error.WriteLine($"[WebAPI-Error]: {args.Data}");
-            }
-        };
+                if (!string.IsNullOrWhiteSpace(args.Data))
+                {
+                    Logger.Information($"[WebAPI]: {args.Data}");
+                }
+            };
 
-        _webApiProcess.Start();
-        _webApiProcess.BeginOutputReadLine();
-        _webApiProcess.BeginErrorReadLine();
+            _webApiProcess.ErrorDataReceived += (_, args) =>
+            {
+                if (!string.IsNullOrWhiteSpace(args.Data))
+                {
+                    Logger.Error($"[WebAPI-Error]: {args.Data}");
+                }
+            };
 
-        Thread.Sleep(10000);
-        Console.WriteLine("WebAPI process started.");
+            _webApiProcess.Start();
+            _webApiProcess.BeginOutputReadLine();
+            _webApiProcess.BeginErrorReadLine();
+
+            Logger.Information($"[WebAPI]: Sleeping for {MillisecondsTimeout / 1000} seconds");
+            Thread.Sleep(MillisecondsTimeout);
+            Logger.Information("[WebAPI]: Process started");
+        }
+        catch (Exception e)
+        {
+            Logger.Error($"[WebAPI-Error]: {e}");
+            throw;
+        }
     }
 
     [AfterTestRun]
     public static void StopWebApi()
     {
-        if (_webApiProcess is not null && !_webApiProcess.HasExited)
+        if (_webApiProcess is null || _webApiProcess.HasExited)
         {
-            Console.WriteLine("Stopping WebAPI process...");
-            _webApiProcess.Kill();
-            _webApiProcess.Dispose();
-            Console.WriteLine("WebAPI process stopped.");
+            Logger.Information("WebAPI process stopped.");
+            return;
         }
+        
+        Logger.Information("Stopping WebAPI process...");
+        _webApiProcess.Kill();
+        _webApiProcess.WaitForExit();
+        _webApiProcess.Dispose();
+        Logger.Information("WebAPI process stopped.");
     }
 }

@@ -1,3 +1,4 @@
+using Application.Common.Http.Responses;
 using Application.Features.Auth.Login.Command;
 using Application.Features.Auth.Login.Swagger;
 using MediatR;
@@ -20,6 +21,7 @@ public class LoginEndpoint(IMediator mediator) : ControllerBase
     [SwaggerResponse(StatusCodes.Status200OK, Description = "Logged in", Type = typeof(LoginResponse))]
     [SwaggerResponseExample(StatusCodes.Status200OK, typeof(LoginResponseExample))]
     [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+    [SwaggerResponse(StatusCodes.Status422UnprocessableEntity, Type = typeof(UnprocessableEntityResponse))]
     [SwaggerRequestExample(typeof(LoginRequest), typeof(LoginRequestExample))]
     public async Task<IActionResult> Post([FromBody] LoginRequest request)
     {
