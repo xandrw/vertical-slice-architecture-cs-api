@@ -46,10 +46,10 @@ dotnet test ./Unit/Unit.csproj
 
 ### SpecFlow Tests
 ```bash
-cd ./Spec && dotnet test
+dotnet test ./Spec/Spec.csproj
 ```
 
 ### SpecFlow on Windows
 ```bash
-cd .\Spec\; dotnet test
+dotnet test .\Spec\Spec.csproj
 ```
