@@ -15,10 +15,7 @@ public class StartWebApiHook
 
     private const int MaxRetryAttempts = 10;
     private const int RetryDelayMilliseconds = 1000;
-    private static readonly HttpClient HttpClient = new();
-    
-    private const string Host = "http://localhost";
-    private const string Port = "5255";
+    private static readonly HttpClient HttpClient = HostConfig.HttpClient;
 
     [BeforeTestRun]
     public static void StartWebApi()
@@ -98,7 +95,7 @@ public class StartWebApiHook
 
     private static bool WaitForWebApiReadiness()
     {
-        const string url = $"{Host}:{Port}/api/health";
+        const string url = "/api/health";
         
         for (var attempt = 1; attempt <= MaxRetryAttempts; attempt++)
         {

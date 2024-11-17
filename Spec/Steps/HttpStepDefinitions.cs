@@ -12,15 +12,7 @@ namespace Spec.Steps;
 [Binding]
 public sealed class HttpStepDefinitions
 {
-    private const string Host = "http://localhost";
-    private const string Port = "5255";
-    private const int TimeoutInSeconds = 10;
-
-    private readonly HttpClient _client = new()
-    {
-        BaseAddress = new Uri($"{Host}:{Port}"),
-        Timeout = TimeSpan.FromSeconds(TimeoutInSeconds)
-    };
+    private readonly HttpClient _client = HostConfig.HttpClient;
 
     private HttpResponseMessage _response = new(HttpStatusCode.OK);
 
