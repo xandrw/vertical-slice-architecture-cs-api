@@ -13,7 +13,12 @@ public class StartWebApiHook
 
     private static readonly ILogger Logger = LoggerHooks.GetLogger();
 
-    private const int MillisecondsTimeout = 10_000;
+    private const int MaxRetryAttempts = 10;
+    private const int RetryDelayMilliseconds = 1000;
+    private static readonly HttpClient HttpClient = new();
+    
+    private const string Host = "http://localhost";
+    private const string Port = "5255";
 
     [BeforeTestRun]
     public static void StartWebApi()
@@ -59,9 +64,14 @@ public class StartWebApiHook
             _webApiProcess.BeginOutputReadLine();
             _webApiProcess.BeginErrorReadLine();
 
-            Logger.Information($"[WebAPI]: Sleeping for {MillisecondsTimeout / 1000} seconds");
-            Thread.Sleep(MillisecondsTimeout);
-            Logger.Information("[WebAPI]: Process started");
+            Logger.Information("[WebAPI]: Waiting for the Web API to become available...");
+
+            if (!WaitForWebApiReadiness())
+            {
+                throw new Exception("[WebAPI]: The Web API did not become available within the expected time.");
+            }
+
+            Logger.Information("[WebAPI]: Web API is ready.");
         }
         catch (Exception e)
         {
@@ -78,11 +88,37 @@ public class StartWebApiHook
             Logger.Information("WebAPI process stopped.");
             return;
         }
-        
+
         Logger.Information("Stopping WebAPI process...");
         _webApiProcess.Kill();
         _webApiProcess.WaitForExit();
         _webApiProcess.Dispose();
         Logger.Information("WebAPI process stopped.");
+    }
+
+    private static bool WaitForWebApiReadiness()
+    {
+        const string url = $"{Host}:{Port}/api/health";
+        
+        for (var attempt = 1; attempt <= MaxRetryAttempts; attempt++)
+        {
+            try
+            {
+                var response = HttpClient.GetAsync(url).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+            }
+            catch
+            {
+                // Ignore exceptions as the API might not be ready yet
+            }
+
+            Logger.Information($"[WebAPI]: Attempt {attempt}/{MaxRetryAttempts} - Web API not ready yet.");
+            Thread.Sleep(RetryDelayMilliseconds);
+        }
+
+        return false;
     }
 }
