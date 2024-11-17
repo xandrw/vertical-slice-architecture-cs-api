@@ -95,17 +95,14 @@ public class StartWebApiHook
 
     private static bool WaitForWebApiReadiness()
     {
-        const string url = "/api/health";
-        
+        const string healthCheckEndpoint = "/api/health";
+
         for (var attempt = 1; attempt <= MaxRetryAttempts; attempt++)
         {
             try
             {
-                var response = HttpClient.GetAsync(url).Result;
-                if (response.IsSuccessStatusCode)
-                {
-                    return true;
-                }
+                var response = HttpClient.GetAsync(healthCheckEndpoint).Result;
+                if (response.IsSuccessStatusCode) return true;
             }
             catch
             {
