@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.Sqlite;
+﻿using System.Diagnostics;
+using Microsoft.Data.Sqlite;
 using Serilog;
 using Spec.Seeders;
 
@@ -16,8 +17,13 @@ public sealed class DatabaseSeedHook
         _connection ??= new SqliteConnection($"Data Source={DatabasePath}");
 
         if (_connection.State != System.Data.ConnectionState.Open) _connection.Open();
-        
+
         Log.Information("[SpecFlow.DatabaseSeedHook]: Connected to database");
+
+        if (Debugger.IsAttached)
+        {
+            Log.Warning("[SpecFlow.DatabaseSeedHook]: Debugger attached, cleanup might not run if process is exited.");
+        }
 
         if (featureContext.FeatureInfo.Tags.Contains("SeedUsers"))
         {
@@ -29,15 +35,16 @@ public sealed class DatabaseSeedHook
     public static void CleanupDatabase(FeatureContext featureContext)
     {
         if (_connection is null) return;
-        
-        if (featureContext.FeatureInfo.Tags.Contains("SeedUsers"))
+
+        UsersSeeder.Cleanup(_connection, Log.Logger);
+
+        if (_connection.State == System.Data.ConnectionState.Open)
         {
-            UsersSeeder.Cleanup(_connection, Log.Logger);
+            _connection.Close();
         }
 
-        if (_connection.State != System.Data.ConnectionState.Open) return;
-        
         _connection.Close();
         _connection.Dispose();
+        _connection = null;
     }
 }

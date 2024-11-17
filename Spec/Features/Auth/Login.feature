@@ -1,4 +1,5 @@
-﻿@SeedUsers
+﻿@Login
+@SeedUsers
 Feature: Login
 
     @LoginUnauthorized
@@ -29,14 +30,14 @@ Feature: Login
         }
         """
         Examples:
-          | Email             | Password                                                           | ValidationErrors                          |
-          | null              | "password"                                                         | {"email": ["error.email.required"]}       |
-          | ""                | "password"                                                         | {"email": ["error.email.required"]}       |
-          | "invalid-email"   | "password"                                                         | {"email": ["error.email.invalid"]}        |
-          | "valid@email.com" | null                                                               | {"password": ["error.password.required"]} |
-          | "valid@email.com" | ""                                                                 | {"password": ["error.password.required"]} |
-          | "valid@email.com" | "short"                                                            | {"password": ["error.password.tooShort"]} |
-          | "valid@email.com" | "longlonglonglonglonglonglonglonglonglonglonglonglonglonglonglong" | {"password": ["error.password.tooLong"]}  |
+          | Email             | Password         | ValidationErrors                          |
+          | null              | "password"       | {"email": ["error.email.required"]}       |
+          | ""                | "password"       | {"email": ["error.email.required"]}       |
+          | "invalid-email"   | "password"       | {"email": ["error.email.invalid"]}        |
+          | "valid@email.com" | null             | {"password": ["error.password.required"]} |
+          | "valid@email.com" | ""               | {"password": ["error.password.required"]} |
+          | "valid@email.com" | "short"          | {"password": ["error.password.tooShort"]} |
+          | "valid@email.com" | "<long_text:61>" | {"password": ["error.password.tooLong"]}  |
 
     @LoginOk
     Scenario: Login - Ok

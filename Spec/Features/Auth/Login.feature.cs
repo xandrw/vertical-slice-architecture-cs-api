@@ -21,6 +21,7 @@ namespace Spec.Features.Auth
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("Login")]
+    [NUnit.Framework.CategoryAttribute("Login")]
     [NUnit.Framework.CategoryAttribute("SeedUsers")]
     public partial class LoginFeature
     {
@@ -28,6 +29,7 @@ namespace Spec.Features.Auth
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
         private static string[] featureTags = new string[] {
+                "Login",
                 "SeedUsers"};
         
 #line 1 "Login.feature"
@@ -84,7 +86,7 @@ namespace Spec.Features.Auth
                     "LoginUnauthorized"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Login - Unauthorized", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 5
+#line 6
     this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -94,10 +96,10 @@ namespace Spec.Features.Auth
             else
             {
                 this.ScenarioStart();
-#line 6
+#line 7
         testRunner.When("I make a POST request to /api/login with the payload:", "{\r\n    \"email\": \"invalid@email.com\",\r\n    \"password\": \"password\"\r\n}", ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 13
+#line 14
         testRunner.Then("the response status code should be 401", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -113,7 +115,7 @@ namespace Spec.Features.Auth
         [NUnit.Framework.TestCaseAttribute("\"valid@email.com\"", "null", "{\"password\": [\"error.password.required\"]}", null)]
         [NUnit.Framework.TestCaseAttribute("\"valid@email.com\"", "\"\"", "{\"password\": [\"error.password.required\"]}", null)]
         [NUnit.Framework.TestCaseAttribute("\"valid@email.com\"", "\"short\"", "{\"password\": [\"error.password.tooShort\"]}", null)]
-        [NUnit.Framework.TestCaseAttribute("\"valid@email.com\"", "\"longlonglonglonglonglonglonglonglonglonglonglonglonglonglonglong\"", "{\"password\": [\"error.password.tooLong\"]}", null)]
+        [NUnit.Framework.TestCaseAttribute("\"valid@email.com\"", "\"<long_text:61>\"", "{\"password\": [\"error.password.tooLong\"]}", null)]
         public void Login_Invalid(string email, string password, string validationErrors, string[] exampleTags)
         {
             string[] @__tags = new string[] {
@@ -128,7 +130,7 @@ namespace Spec.Features.Auth
             argumentsOfScenario.Add("Password", password);
             argumentsOfScenario.Add("ValidationErrors", validationErrors);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Login - Invalid", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 16
+#line 17
     this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -138,13 +140,13 @@ namespace Spec.Features.Auth
             else
             {
                 this.ScenarioStart();
-#line 17
+#line 18
         testRunner.When("I make a POST request to /api/login with the payload:", string.Format("{{\r\n    \"email\": {0},\r\n    \"password\": {1}\r\n}}", email, password), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 24
+#line 25
         testRunner.Then("the response status code should be 422", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 25
+#line 26
         testRunner.And("the response should contain", string.Format("{{\r\n    \"errors\" : {0}\r\n}}", validationErrors), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -160,7 +162,7 @@ namespace Spec.Features.Auth
                     "LoginOk"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Login - Ok", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 42
+#line 43
     this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -170,13 +172,13 @@ namespace Spec.Features.Auth
             else
             {
                 this.ScenarioStart();
-#line 43
+#line 44
         testRunner.When("I make a POST request to /api/login with the payload:", "{\r\n    \"email\": \"test.admin@email.com\",\r\n    \"password\": \"password\"\r\n}", ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 50
+#line 51
         testRunner.Then("the response status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 51
+#line 52
         testRunner.And("the response should contain", "{\r\n    \"user\": {\r\n        \"id\": 13786,\r\n        \"email\": \"test.admin@email.com\",\r" +
                         "\n        \"role\": \"Admin\"\r\n    }\r\n}", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden

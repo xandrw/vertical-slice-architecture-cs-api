@@ -15,13 +15,13 @@ public sealed class HttpStepDefinitions
     private const string Host = "http://localhost";
     private const string Port = "5255";
     private const int TimeoutInSeconds = 10;
-    
+
     private readonly HttpClient _client = new()
     {
         BaseAddress = new Uri($"{Host}:{Port}"),
         Timeout = TimeSpan.FromSeconds(TimeoutInSeconds)
     };
-    
+
     private HttpResponseMessage _response = new(HttpStatusCode.OK);
 
     [Given(@"I authenticate with ""(.*)"" and ""(.*)""")]
@@ -41,11 +41,17 @@ public sealed class HttpStepDefinitions
     {
         _response = await _client.GetAsync(endpoint);
     }
-    
+
     [When("I make a POST request to (.*) with the payload:")]
     public async Task WhenIMakeAPostRequestTo(string endpoint, string payload)
     {
-        _response = await _client.PostAsync(endpoint, new StringContent(payload, Encoding.UTF8, "application/json"));
+        _response = await _client.PostAsync(
+            endpoint,
+            new StringContent(
+                BogusGenerator.Generate(payload),
+                Encoding.UTF8, "application/json"
+            )
+        );
     }
 
     [Then("the response status code should be (.*)")]

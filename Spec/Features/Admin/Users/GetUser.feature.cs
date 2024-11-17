@@ -21,6 +21,7 @@ namespace Spec.Features.Admin.Users
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("Get User")]
+    [NUnit.Framework.CategoryAttribute("GetUser")]
     [NUnit.Framework.CategoryAttribute("SeedUsers")]
     public partial class GetUserFeature
     {
@@ -28,6 +29,7 @@ namespace Spec.Features.Admin.Users
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
         private static string[] featureTags = new string[] {
+                "GetUser",
                 "SeedUsers"};
         
 #line 1 "GetUser.feature"
@@ -76,15 +78,15 @@ namespace Spec.Features.Admin.Users
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("I cannot access the GetUser endpoint anonymously")]
+        [NUnit.Framework.DescriptionAttribute("GetUser - Unauthorized")]
         [NUnit.Framework.CategoryAttribute("GetUserUnauthorized")]
-        public void ICannotAccessTheGetUserEndpointAnonymously()
+        public void GetUser_Unauthorized()
         {
             string[] tagsOfScenario = new string[] {
                     "GetUserUnauthorized"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I cannot access the GetUser endpoint anonymously", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 5
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("GetUser - Unauthorized", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 6
     this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -94,10 +96,10 @@ namespace Spec.Features.Admin.Users
             else
             {
                 this.ScenarioStart();
-#line 6
+#line 7
         testRunner.When("I make a GET request to /api/admin/users/1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 7
+#line 8
         testRunner.Then("the response status code should be 401", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -105,15 +107,15 @@ namespace Spec.Features.Admin.Users
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("I cannot access the GetUser endpoint as an Author")]
+        [NUnit.Framework.DescriptionAttribute("GetUser - Forbidden")]
         [NUnit.Framework.CategoryAttribute("GetUserForbidden")]
-        public void ICannotAccessTheGetUserEndpointAsAnAuthor()
+        public void GetUser_Forbidden()
         {
             string[] tagsOfScenario = new string[] {
                     "GetUserForbidden"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I cannot access the GetUser endpoint as an Author", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 10
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("GetUser - Forbidden", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 11
     this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -123,13 +125,13 @@ namespace Spec.Features.Admin.Users
             else
             {
                 this.ScenarioStart();
-#line 11
+#line 12
         testRunner.Given("I authenticate with \"test.author@example.com\" and \"password\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 12
+#line 13
         testRunner.When("I make a GET request to /api/admin/users/1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 13
+#line 14
         testRunner.Then("the response status code should be 403", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -137,15 +139,15 @@ namespace Spec.Features.Admin.Users
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("I access the GetUser endpoint as an Admin and request a user that doesn\'t exist")]
+        [NUnit.Framework.DescriptionAttribute("GetUser - NotFound")]
         [NUnit.Framework.CategoryAttribute("GetUserNotFound")]
-        public void IAccessTheGetUserEndpointAsAnAdminAndRequestAUserThatDoesntExist()
+        public void GetUser_NotFound()
         {
             string[] tagsOfScenario = new string[] {
                     "GetUserNotFound"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I access the GetUser endpoint as an Admin and request a user that doesn\'t exist", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 16
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("GetUser - NotFound", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 17
     this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -155,13 +157,13 @@ namespace Spec.Features.Admin.Users
             else
             {
                 this.ScenarioStart();
-#line 17
+#line 18
         testRunner.Given("I authenticate with \"test.admin@email.com\" and \"password\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 18
+#line 19
         testRunner.When("I make a GET request to /api/admin/users/99999", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 19
+#line 20
         testRunner.Then("the response status code should be 404", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -169,15 +171,15 @@ namespace Spec.Features.Admin.Users
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("I access the GetUser endpoint as an Admin")]
+        [NUnit.Framework.DescriptionAttribute("GetUser - Ok")]
         [NUnit.Framework.CategoryAttribute("GetUserOk")]
-        public void IAccessTheGetUserEndpointAsAnAdmin()
+        public void GetUser_Ok()
         {
             string[] tagsOfScenario = new string[] {
                     "GetUserOk"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I access the GetUser endpoint as an Admin", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 22
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("GetUser - Ok", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 23
     this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -187,16 +189,16 @@ namespace Spec.Features.Admin.Users
             else
             {
                 this.ScenarioStart();
-#line 23
+#line 24
         testRunner.Given("I authenticate with \"test.admin@email.com\" and \"password\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 24
+#line 25
         testRunner.When("I make a GET request to /api/admin/users/13786", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 25
+#line 26
         testRunner.Then("the response status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 26
+#line 27
         testRunner.And("the response should contain", "{\r\n    \"email\": \"test.admin@email.com\",\r\n    \"role\": \"Admin\"\r\n}", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
