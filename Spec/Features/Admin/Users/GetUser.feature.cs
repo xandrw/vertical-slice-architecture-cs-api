@@ -193,13 +193,13 @@ namespace Spec.Features.Admin.Users
         testRunner.Given("I authenticate with \"test.admin@email.com\" and \"password\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 25
-        testRunner.When("I make a GET request to /api/admin/users/13786", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+        testRunner.When("I make a GET request to /api/admin/users/137", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 26
         testRunner.Then("the response status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 27
-        testRunner.And("the response should contain", "{\r\n    \"email\": \"test.admin@email.com\",\r\n    \"role\": \"Admin\"\r\n}", ((TechTalk.SpecFlow.Table)(null)), "And ");
+        testRunner.And("the response should contain", "{\r\n    \"id\": 137,\r\n    \"email\": \"test.admin@email.com\",\r\n    \"role\": \"Admin\"\r\n}", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

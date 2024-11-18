@@ -179,8 +179,8 @@ namespace Spec.Features.Auth
         testRunner.Then("the response status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 52
-        testRunner.And("the response should contain", "{\r\n    \"user\": {\r\n        \"id\": 13786,\r\n        \"email\": \"test.admin@email.com\",\r" +
-                        "\n        \"role\": \"Admin\"\r\n    }\r\n}", ((TechTalk.SpecFlow.Table)(null)), "And ");
+        testRunner.And("the response should contain", "{\r\n    \"user\": {\r\n        \"id\": 137,\r\n        \"email\": \"test.admin@email.com\",\r\n " +
+                        "       \"role\": \"Admin\"\r\n    }\r\n}", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

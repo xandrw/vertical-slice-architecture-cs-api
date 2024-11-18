@@ -22,11 +22,12 @@ Feature: Get User
     @GetUserOk
     Scenario: GetUser - Ok
         Given I authenticate with "test.admin@email.com" and "password"
-        When I make a GET request to /api/admin/users/13786
+        When I make a GET request to /api/admin/users/137
         Then the response status code should be 200
         And the response should contain
         """
         {
+            "id": 137,
             "email": "test.admin@email.com",
             "role": "Admin"
         }

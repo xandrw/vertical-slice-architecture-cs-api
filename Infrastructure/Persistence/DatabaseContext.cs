@@ -21,12 +21,12 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
         base.OnModelCreating(modelBuilder);
     }
 
-    protected void ConfigureUsers(EntityTypeBuilder<User> builder)
+    private void ConfigureUsers(EntityTypeBuilder<User> builder)
     {
         builder.HasIndex(u => u.Email).IsUniqueWithPrefix();
     }
 
-    protected void ConfigurePages(EntityTypeBuilder<Page> builder)
+    private void ConfigurePages(EntityTypeBuilder<Page> builder)
     {
         builder
             .HasMany(p => p.Sections)
@@ -36,7 +36,7 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
         builder.HasIndex(p => p.Title).IsUniqueWithPrefix();
     }
 
-    protected void ConfigureSections(EntityTypeBuilder<Section> builder)
+    private void ConfigureSections(EntityTypeBuilder<Section> builder)
     {
         builder.Property<int>("PageId");
 
@@ -45,16 +45,15 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        if (!optionsBuilder.IsConfigured)
+        if (optionsBuilder.IsConfigured) return;
+
+        var databasePath = Path.Combine("Database", "app.db");
+
+        if (File.Exists(databasePath) == false)
         {
-            var appDbPath = Path.Combine("Database", "app.db");
-
-            if (File.Exists(appDbPath) == false)
-            {
-                File.Create(appDbPath).Close();
-            }
-
-            optionsBuilder.UseSqlite($"Data Source={appDbPath}");
+            File.Create(databasePath).Close();
         }
+
+        optionsBuilder.UseSqlite($"Data Source={databasePath}");
     }
 }

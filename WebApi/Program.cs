@@ -20,7 +20,6 @@ public class Program
 
         try
         {
-
             var builder = WebApplication.CreateBuilder(args);
             builder.Configuration.ConfigureEnvVariables();
             builder.Services.AddInfrastructure(builder.Configuration);
@@ -40,8 +39,9 @@ public class Program
             {
                 app.UseSwaggerDocumentation();
                 app.UseDeveloperExceptionPage();
-                await app.Services.EnsureDatabaseMigratedAsync();
             }
+
+            await app.Services.EnsureDatabaseMigratedAsync();
 
             app.UseMiddleware<ExceptionHandlingMiddleware>();
             // app.UseHttpsRedirection();

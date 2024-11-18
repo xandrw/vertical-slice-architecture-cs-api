@@ -17,8 +17,8 @@ public static class UsersSeeder
             User.Create("test.author@example.com", "Author", "password", passwordHasher.HashPassword)
         ];
 
-        string adminId = "13786";
-        string authorId = "175694";
+        string adminId = "137";
+        string authorId = "175";
         foreach (var user in users)
         {
             var insertCommand = connection.CreateCommand();

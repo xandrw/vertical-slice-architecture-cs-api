@@ -2,8 +2,8 @@
 
 public static class HostConfig
 {
-    private const string Host = "http://localhost";
-    private const string Port = "5255";
+    public const string Host = "http://localhost";
+    public const string Port = "5255";
     private const int TimeoutInSeconds = 10;
 
     public static HttpClient HttpClient => new()

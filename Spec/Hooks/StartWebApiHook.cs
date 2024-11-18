@@ -32,7 +32,7 @@ public class StartWebApiHook
                 StartInfo = new ProcessStartInfo
                 {
                     FileName = "dotnet",
-                    Arguments = "run",
+                    Arguments = $"run --environment Test --urls {HostConfig.Host}:{HostConfig.Port}",
                     WorkingDirectory = WebApiProjectPath,
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
