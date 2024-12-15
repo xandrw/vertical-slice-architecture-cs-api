@@ -1,6 +1,7 @@
 using Domain.Pages;
 using Domain.Users;
 using Infrastructure.Extensions;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -43,17 +44,40 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
         builder.HasIndex("PageId", nameof(Section.Name)).IsUniqueWithPrefix();
     }
 
+    private static SqliteConnection? _sharedInMemoryConnection;
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         if (optionsBuilder.IsConfigured) return;
 
-        var databasePath = Path.Combine("Database", "app.db");
+        var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
-        if (File.Exists(databasePath) == false)
+        if (environment == "Test")
         {
-            File.Create(databasePath).Close();
-        }
+            if (_sharedInMemoryConnection == null)
+            {
+                _sharedInMemoryConnection = new SqliteConnection(
+                    "Data Source=TestDatabase;Mode=Memory;Cache=Shared"
+                );
+                _sharedInMemoryConnection.Open();
+            }
 
-        optionsBuilder.UseSqlite($"Data Source={databasePath}");
+            optionsBuilder.UseSqlite(_sharedInMemoryConnection);
+        }
+        else
+        {
+            optionsBuilder.UseSqlite($"Data Source={Path.Combine("Database", "app.db")}");
+        }
+    }
+
+    public override void Dispose()
+    {
+        base.Dispose();
+
+        if (_sharedInMemoryConnection is null) return;
+
+        _sharedInMemoryConnection.Close();
+        _sharedInMemoryConnection.Dispose();
+        _sharedInMemoryConnection = null;
     }
 }

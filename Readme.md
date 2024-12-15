@@ -26,8 +26,8 @@ If you're using an IDE, the `WebApi/Properties/launchSettings.json` file will be
 and you will be able to `run`/`debug` the application from the UI
 
 ## Migrations
-Because Migrations run automatically when starting the project in **Development**
-(see `Infrastructure/DependencyInjection`@`EnsureDatabaseMigratedAsync`)
+Because Migrations run automatically when starting the project
+(see `Infrastructure/InfrastructureConfig`@`EnsureDatabaseMigratedAsync`)
 Migrations don't need manual intervention, but you can run the following:
 - Add new migration based on any Entity changes:
 ```bash
@@ -36,6 +36,10 @@ dotnet ef migrations add [CustomName] --project Infrastructure
 - Run any new migrations:
 ```bash
 dotnet ef database update --project Infrastructure
+```
+- Save migration SQL script:
+```bash
+dotnet ef migrations script --no-build --project ./Infrastructure/ > migration.sql
 ```
 
 ## Tests

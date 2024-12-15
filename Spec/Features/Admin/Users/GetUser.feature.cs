@@ -199,7 +199,7 @@ namespace Spec.Features.Admin.Users
         testRunner.Then("the response status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 27
-        testRunner.And("the response should contain", "{\r\n    \"id\": 137,\r\n    \"email\": \"test.admin@email.com\",\r\n    \"role\": \"Admin\"\r\n}", ((TechTalk.SpecFlow.Table)(null)), "And ");
+        testRunner.And("the response should contain", "{\r\n    \"id\": 1,\r\n    \"email\": \"test.admin@email.com\",\r\n    \"role\": \"Admin\"\r\n}", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

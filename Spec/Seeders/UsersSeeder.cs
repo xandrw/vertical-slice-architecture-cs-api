@@ -1,55 +1,52 @@
 ﻿using Domain.Users;
+using Infrastructure.Persistence;
 using Infrastructure.Services;
-using Microsoft.Data.Sqlite;
 using Serilog;
 
 namespace Spec.Seeders;
 
 public static class UsersSeeder
 {
-    public static void Seed(SqliteConnection connection, ILogger logger)
+    public static void Seed(DatabaseContext context, ILogger logger)
     {
-        var passwordHasher = new HmacSha512PasswordHasher();
-
-        User[] users =
-        [
-            User.Create("test.admin@email.com", "Admin", "password", passwordHasher.HashPassword),
-            User.Create("test.author@example.com", "Author", "password", passwordHasher.HashPassword)
-        ];
-
-        string adminId = "137";
-        string authorId = "175";
-        foreach (var user in users)
+        try
         {
-            var insertCommand = connection.CreateCommand();
-            insertCommand.CommandText = @"
-                INSERT INTO Users (Id, Email, Role, PasswordHash, PasswordSalt)
-                VALUES (@Id, @Email, @Role, @PasswordHash, @PasswordSalt);
-            ";
-            insertCommand.Parameters.AddWithValue("@Id", user.Role == Role.Admin ? adminId : authorId);
-            insertCommand.Parameters.AddWithValue("@Email", user.Email);
-            insertCommand.Parameters.AddWithValue("@Role", user.Role);
-            insertCommand.Parameters.AddWithValue("@PasswordHash", user.PasswordHash);
-            insertCommand.Parameters.AddWithValue("@PasswordSalt", user.PasswordSalt);
-            insertCommand.ExecuteNonQuery();
-            logger.Information($"[SpecFlow.UsersSeeder]: User {user.Email} with {user.Role} role seeded.");
+            var passwordHasher = new HmacSha512PasswordHasher();
+
+            User[] users =
+            [
+                User.Create("test.admin@email.com", "Admin", "password", passwordHasher.HashPassword),
+                User.Create("test.author@example.com", "Author", "password", passwordHasher.HashPassword)
+            ];
+
+            context.Users.AddRange(users);
+            context.SaveChanges();
+
+            foreach (var user in users)
+            {
+                logger.Information($"[SpecFlow.UsersSeeder]: User {user.Email} with {user.Role} role seeded.");
+            }
+        }
+        catch (Exception e)
+        {
+            logger.Error(e, "[SpecFlow.UsersSeeder]: An error occurred while seeding users.");
+            throw;
         }
     }
 
-    public static void Cleanup(SqliteConnection connection, ILogger logger)
+    public static void Cleanup(DatabaseContext context, ILogger logger)
     {
-        var cleanupCommand = connection.CreateCommand();
-        cleanupCommand.CommandText = "DELETE FROM Users WHERE Email LIKE 'test.%';";
-        cleanupCommand.ExecuteNonQuery();
+        try
+        {
+            context.Users.RemoveRange(context.Users);
+            context.SaveChanges();
 
-        var resetSequenceCommand = connection.CreateCommand();
-        resetSequenceCommand.CommandText = @"
-            UPDATE sqlite_sequence
-            SET seq = COALESCE((SELECT Id FROM Users ORDER BY Id DESC LIMIT 1), 0)
-            WHERE name = 'Users';
-        ";
-        resetSequenceCommand.ExecuteNonQuery();
-
-        logger.Information("[SpecFlow.UsersSeeder]: Cleaned up.");
+            logger.Information("[SpecFlow.UsersSeeder]: All seeded users removed.");
+        }
+        catch (Exception e)
+        {
+            logger.Error(e, "[SpecFlow.UsersSeeder]: An error occurred while cleaning up users.");
+            throw;
+        }
     }
 }

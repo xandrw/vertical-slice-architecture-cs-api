@@ -10,17 +10,13 @@ public static class JsonHelper
         switch (expected.Type)
         {
             case JTokenType.Object:
-            {
-                foreach (var property in expected.Children<JProperty>())
+                foreach (var expectedProperty in expected.Children<JProperty>())
                 {
-                    var actualProperty = actual[property.Name];
-                    CompareJson(property.Value, actualProperty!);
+                    var actualProperty = actual[expectedProperty.Name];
+                    CompareJson(expectedProperty.Value, actualProperty!);
                 }
-
                 break;
-            }
             case JTokenType.Array:
-            {
                 var expectedArray = expected as JArray;
                 var actualArray = actual as JArray;
 
@@ -28,9 +24,7 @@ public static class JsonHelper
                 {
                     CompareJson(expectedArray[i], actualArray![i]);
                 }
-
                 break;
-            }
             default:
                 Assert.That(actual.ToString(), Is.EqualTo(expected.ToString()));
                 break;

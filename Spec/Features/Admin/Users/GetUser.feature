@@ -27,7 +27,7 @@ Feature: Get User
         And the response should contain
         """
         {
-            "id": 137,
+            "id": 1,
             "email": "test.admin@email.com",
             "role": "Admin"
         }

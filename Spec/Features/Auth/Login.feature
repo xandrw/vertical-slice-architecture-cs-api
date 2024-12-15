@@ -53,7 +53,7 @@ Feature: Login
         """
         {
             "user": {
-                "id": 137,
+                "id": 1,
                 "email": "test.admin@email.com",
                 "role": "Admin"
             }
